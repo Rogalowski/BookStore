@@ -1,4 +1,4 @@
-# Book_Store
+# BookStore
 
 <h1 align="center">Rogalowski's Project <img src="https://komarev.com/ghpvc/?username=rogalowski&label=Profile%20views&color=0e75b6&style=flat" alt="rogalowski" /></h1>
 
@@ -18,7 +18,7 @@
 <p>  <img align="center" src="https://github-readme-stats.vercel.app/api?username=rogalowski&show_icons=true&locale=en" alt="rogalowski" /> &nbsp; <img align="left" src="https://github-readme-stats.vercel.app/api/top-langs?username=rogalowski&show_icons=true&locale=en&layout=compact" alt="rogalowski" /> </p>
 
 
-<h1 align="center">Book_Store</h1>
+<h1 align="center">BookStore</h1>
 Challenge
 Mr Czesław from the STX BookStore company asked you for help with writing an application that will allow him to browse the list of books and help him understand what needs to be ordered for his bookstores.
 

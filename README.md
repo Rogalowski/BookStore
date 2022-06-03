@@ -20,10 +20,9 @@
 # CONFIGURATION & REQUIREMENTS
 
 asgiref==3.5.2
-backports.zoneinfo==0.2.1
 Django==4.0.5
 django-extensions==3.1.5
-psycopg2==2.9.3
+psycopg2-binary==2.9.3
 sqlparse==0.4.2
 
 # DESCRIPTION

@@ -1,0 +1,17 @@
+<h1> BOOKS: </h1>
+<p>  {% for book in all_books %}
+  <ul>
+  <li>
+    <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  title:    <b>   {{ book.title}}</b>
+   description:  <b>   {{ book.description }}</b>
+
+   Authors:
+  {% for author in book.authors.all %}
+
+  <b> {{author}} </b>
+  {%endfor%}
+
+  </li>
+</ul>
+{% endfor %}
+             </p>

@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-59+6a%$zldw$kcii)6v^wh)k6*3$-6i+x8vjm=d0$#f*lw^0t7'
+SECRET_KEY = 'django-insecure-bk!ql*g(cs%q8v=jgqaiss!zfiumn(i$q1uve0$2_@xb68-c+!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,8 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
-    'bookstore',
 ]
 
 MIDDLEWARE = [
@@ -77,12 +75,8 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 
 DATABASES = {
     'default': {
-        'HOST': '127.0.0.1',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bookstore',
-        'USER': 'postgres',
-        'PASSWORD': 'bookstore',
-        'PORT': 5431,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -117,7 +111,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-USE_L10N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

@@ -21,20 +21,10 @@
 
 asgiref==3.5.2
 backports.zoneinfo==0.2.1
-distlib==0.3.4
 Django==4.0.5
 django-extensions==3.1.5
-filelock==3.7.1
-pbr==5.9.0
-pkg_resources==0.0.0
-platformdirs==2.5.2
 psycopg2==2.9.3
-six==1.16.0
 sqlparse==0.4.2
-stevedore==3.5.0
-virtualenv==20.14.1
-virtualenv-clone==0.5.7
-virtualenvwrapper==4.8.4
 
 # DESCRIPTION
 

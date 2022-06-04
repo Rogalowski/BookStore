@@ -1,6 +1,7 @@
 from django.db import models
 from shortuuidfield import ShortUUIDField
 import uuid
+import shortuuid
 
 
 # Create your models here.
@@ -12,13 +13,15 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    # external_id = ShortUUIDField(
-    #     max_length=10,
-    #     primary_key=False,
-    # )
-    external_id = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False)
+    external_id = ShortUUIDField(
+        max_length=5,
+        primary_key=False,
+    )
+
+    # external_id = models.UUIDField(
+    #     default=uuid.uuid4,
+    #     editable=False)
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     authors = models.ManyToManyField(Author)

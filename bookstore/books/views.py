@@ -47,6 +47,10 @@ class Add_Book(View):
             thumbnail = form.cleaned_data['thumbnail']
             print(f" thumbnail: {thumbnail}")
 
+            # if Room.objects.filter(name=room_name).first():
+            # error_name = f"That room exist: {room_name}"
+            # return render(request, 'booking_rooms_templates/add_room_html.html', context={'error_name': error_name})
+
             add_book = Book.objects.create(
                 title=title,
                 description=description,
@@ -55,15 +59,14 @@ class Add_Book(View):
                 published_year=published_year,
                 thumbnail=thumbnail,
             )
-            add_book.authors.add(
-                # *Author.objects.
-                *Author.objects.filter(id=authors.id)
-            )
+            add_book.authors.add(*authors
+                                 # Author.objects.filter(id=authors.id)
+                                 )
 
             return redirect('')
 
         context = {
             'form': form,
-            'result': f"FORM CRUSHED, TRY ONE MORE TIME"
+            'result': f"FORM CRASHED, TRY ONE MORE TIME"
         }
         return render(request, 'books/add_book_view.html', context)

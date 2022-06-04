@@ -129,3 +129,17 @@ class EditBook_View(UpdateView):
             'result': f"FORM CRASHED, TRY ONE MORE TIME"
         }
         return render(request, 'books/add_book_view.html', context)
+
+
+class DeleteBook_View(DeleteView):
+
+    template_name = 'books/book_confirm_delete.html'
+    model = Book
+    # fields = ['description']
+
+    def get_success_url(self):
+        return reverse('')
+
+    def get_object(self, queryset=None):
+        id_ = self.kwargs.get('book_id')
+        return get_object_or_404(Book, id=id_)

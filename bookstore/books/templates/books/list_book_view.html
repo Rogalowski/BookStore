@@ -13,8 +13,10 @@
 
   </li>
 </ul>
-<h3>  <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a> </h3>
+<h4>  <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a>
+  <a href="{% url 'delete_book' book.id %} " > DELETE BOOK </a>
+</h4>
 {% endfor %}
              </p>
 
-             <h3> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h3>
+             <h2> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h2>

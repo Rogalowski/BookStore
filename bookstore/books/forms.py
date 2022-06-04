@@ -25,9 +25,10 @@ class SearchBook_Form(ModelForm):
     title = forms.CharField(label='Search by: title', required=False)
     authors = forms.ModelChoiceField(
         queryset=Author.objects.all(), required=False)
-    # authors = forms.CharField(required=False)
-    # publication_year =
     acquired = forms.BooleanField(label='acquired', required=False)
+    published_year_min = forms.IntegerField(
+        label='Year, min', required=False)
+    published_year_max = forms.IntegerField(label='max', required=False)
 
     class Meta:
         model = Book
@@ -35,6 +36,9 @@ class SearchBook_Form(ModelForm):
             'title',
             'authors',
             'acquired',
+            # 'published_year',
+            'published_year_min',
+            'published_year_max',
         )
         labels = {
             "title": "Search by title/status",

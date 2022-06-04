@@ -28,22 +28,35 @@ class ListBook_View(View):
             'title': [],
             'author': [],
             'acquired': [],
+            'published_year_min': [],
+            'published_year_max': [],
         }
         if form.is_valid():
             typed_title = form.cleaned_data['title']
-            typed_author = form.cleaned_data['authors']
             typed_acquired = form.cleaned_data['acquired']
+            typed_author = form.cleaned_data['authors']
+            typed_year_min = form.cleaned_data['published_year_min']
+            typed_year_max = form.cleaned_data['published_year_max']
+            print(f'typed_author IF: {typed_author}')
+            if not typed_author:
+                # typed_author = Author.objects.all()
+                typed_author = 0
+                print(f'typed_author IF: {typed_author}')
+            if not typed_year_min:
+                typed_year_min = 0
+            if not typed_year_max:
+                typed_year_max = 3000
 
-            # filtering by typed title
+            # filtering
             filter_title = {'title__icontains': typed_title}
-            filter_author = {'authors': typed_author}
+            filter_authors = {'authors': typed_author}
             filter_acquired = {'acquired__icontains': typed_acquired}
+            filter_year = {'published_year__gte': typed_year_min,
+                           'published_year__lte': typed_year_max}
 
-            # filter_ticket_requester = {
-            #     'user_requestor__username__icontains': typed_user.username  # filtering by typed user
-            # }
             filtered_books = Book.objects.filter(
-                Q(**filter_acquired) & Q(**filter_title) & Q(**filter_author))
+                Q(**filter_acquired) & Q(**filter_title) & Q(**filter_authors) & Q(**filter_year))
+            print(f'filtered_books: {filtered_books}')
 
             # .order_by('title').distinct()
 

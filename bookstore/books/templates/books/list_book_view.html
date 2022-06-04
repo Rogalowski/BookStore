@@ -31,7 +31,8 @@
   </ul>
 
         {% empty %}
-         No search data from keyword: <b>{{ filtered_books  }} </b>
+         {% comment %} No search data from keyword: <b>{{ filtered_books  }} </b> {% endcomment %}
+         No search data from provided keywords
       {% endfor %}
 
 
@@ -46,7 +47,7 @@
    <p> <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  <b>  Title: </b>    {{ book.title}}
     <b>    Description: </b>  {{ book.description }}</p>
     <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
-      <b> Authors: </b>
+      <b> Author: </b>
   {% for author in book.authors.all %}
 
   {{author}}

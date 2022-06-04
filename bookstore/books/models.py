@@ -14,14 +14,12 @@ class Author(models.Model):
 
 class Book(models.Model):
     external_id = ShortUUIDField(
-        max_length=5,
-        primary_key=False,
+        max_length=10,
+        # primary_key=True,
     )
-
     # external_id = models.UUIDField(
     #     default=uuid.uuid4,
     #     editable=False)
-
     title = models.CharField(max_length=255)
     description = models.TextField()
     authors = models.ManyToManyField(Author)

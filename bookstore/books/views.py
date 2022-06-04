@@ -2,13 +2,13 @@ from webbrowser import get
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import Author, Book
-from books.forms import AddBookForm
+from books.forms import AddBook_Form
 
 # Create your views here.
 
 
-class List_Book(View):
-    def get(self, request):
+class ListBook_View(View):
+    def get(self, request,   *args, **kwargs):
         all_books = Book.objects.all()
         all_authors = Author.objects.all()
 
@@ -19,15 +19,15 @@ class List_Book(View):
         return render(request, 'books/list_book_view.html', context)
 
 
-class Add_Book(View):
+class AddBook_View(View):
     def get(self, request):
         context = {
-            'form': AddBookForm(),
+            'form': AddBook_Form(),
         }
         return render(request, 'books/add_book_view.html', context)
 
     def post(self, request):
-        form = AddBookForm(request.POST or None)
+        form = AddBook_Form(request.POST or None)
         context = {
             'form': form,
         }
@@ -59,9 +59,7 @@ class Add_Book(View):
                 published_year=published_year,
                 thumbnail=thumbnail,
             )
-            add_book.authors.add(*authors
-                                 # Author.objects.filter(id=authors.id)
-                                 )
+            add_book.authors.add(*authors)
 
             return redirect('')
 
@@ -70,3 +68,8 @@ class Add_Book(View):
             'result': f"FORM CRASHED, TRY ONE MORE TIME"
         }
         return render(request, 'books/add_book_view.html', context)
+
+
+class EditBook_View(View):
+    def get(self, request):
+        pass

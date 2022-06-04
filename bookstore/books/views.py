@@ -135,7 +135,6 @@ class DeleteBook_View(DeleteView):
 
     template_name = 'books/book_confirm_delete.html'
     model = Book
-    # fields = ['description']
 
     def get_success_url(self):
         return reverse('')

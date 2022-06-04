@@ -23,8 +23,9 @@ class AddBook_Form(ModelForm):
 
 class SearchBook_Form(ModelForm):
     title = forms.CharField(label='Search by: title', required=False)
-    # author = forms.ModelChoiceField(
-    #     queryset=Author.objects.all(), required=False)
+    authors = forms.ModelChoiceField(
+        queryset=Author.objects.all(), required=False)
+    # authors = forms.CharField(required=False)
     # publication_year =
     acquired = forms.BooleanField(label='acquired', required=False)
 
@@ -32,7 +33,7 @@ class SearchBook_Form(ModelForm):
         model = Book
         fields = (
             'title',
-            # 'author',
+            'authors',
             'acquired',
         )
         labels = {

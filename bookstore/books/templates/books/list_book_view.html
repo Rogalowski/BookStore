@@ -1,39 +1,63 @@
-<h1> BOOKS: </h1>
+
+<h1> <a href="{% url ''   %} " > BOOKS:</a> </h1>
+
+
+<h2> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h2>
+
+{% include 'base_form.html' with form=form %}
+
+
+
+<p>  {% for book in  filtered_books %}
+  <ul>
+    <li>
+     <p>
+      <div>
+      <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  <b>  Title: </b>    {{ book.title}}
+      <b>    Description: </b>  {{ book.description }}
+      </div>
+      <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
+        <b> Authors: </b>
+    {% for author in book.authors.all %}
+
+    {{author}}
+    {%endfor%}
+    <div>
+       <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a>
+      &nbsp <a href="{% url 'delete_book' book.id %} " > DELETE BOOK </a>
+    </div>
+  </p>
+    </li>
+  </ul>
+
+        {% empty %}
+         No search data from keyword: <b>{{ filtered_books  }} </b>
+      {% endfor %}
+
+
+
+
+
+
+
 <p>  {% for book in all_books %}
   <ul>
   <li>
-    <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  title:    <b>   {{ book.title}}</b>
-   description:  <b>   {{ book.description }}</b>
-
-   Authors:
+   <p> <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  <b>  Title: </b>    {{ book.title}}
+    <b>    Description: </b>  {{ book.description }}</p>
+    <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
+      <b> Authors: </b>
   {% for author in book.authors.all %}
 
-  <b> {{author}} </b>
+  {{author}}
   {%endfor%}
 
   </li>
 </ul>
 <h4>  <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a>
-  <a href="{% url 'delete_book' book.id %} " > DELETE BOOK </a>
+ &nbsp <a href="{% url 'delete_book' book.id %} " > DELETE BOOK </a>
 </h4>
 {% endfor %}
              </p>
 
-             <h2> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h2>
 
-             {% include 'base_form.html' with form=form %}
-
-             <p>  {% for book in  filtered_books %}
-            <p>  <b>   {{ forloop.counter}})   </b>       {{ book.title }}
-             {{ book.acquired }} </p>
-{% comment %}
-                       <b>   Assignment:  </b>
-
-                          {% for assignment in ticket.user_assignment.all %}
-                          {{ assignment }}
-                             {% endfor %}
-                       </p> {% endcomment %}
-
-                     {% empty %}
-                      No products with provided <b>{{ typed_name  }} </b>  product name
-                   {% endfor %}

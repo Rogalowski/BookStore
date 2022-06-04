@@ -26,24 +26,27 @@ class ListBook_View(View):
         context = {
             'form': form,
             'title': [],
-            # 'author': [],
+            'author': [],
             'acquired': [],
         }
         if form.is_valid():
             typed_title = form.cleaned_data['title']
-            # typed_author = form.cleaned_data['author']
+            typed_author = form.cleaned_data['authors']
             typed_acquired = form.cleaned_data['acquired']
 
             # filtering by typed title
             filter_title = {'title__icontains': typed_title}
-            # filter_author = {'author__icontains': typed_author}
-            filter_acquired = {'acquired__contains': typed_acquired}
+            filter_author = {'authors': typed_author}
+            filter_acquired = {'acquired__icontains': typed_acquired}
 
             # filter_ticket_requester = {
             #     'user_requestor__username__icontains': typed_user.username  # filtering by typed user
             # }
-            filtered_books = Book.objects.filter(Q(**filter_title) |
-                                                 Q(**filter_acquired)).order_by('title').distinct()
+            filtered_books = Book.objects.filter(
+                Q(**filter_acquired) & Q(**filter_title) & Q(**filter_author))
+
+            # .order_by('title').distinct()
+
             # if not typed_user:
             #     tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
             #                                     Q(**filter_ticket_status)).order_by('title').distinct()

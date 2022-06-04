@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from .models import Author, Book
-from books.forms import AddBook_Form
+from books.forms import AddBook_Form, SearchBook_Form
 from django.views.generic import UpdateView, DeleteView
-# Create your views here.
+from django.db.models import Q
 
 
 class ListBook_View(View):
@@ -17,7 +17,43 @@ class ListBook_View(View):
         context = {
             'all_books': all_books,
             'all_authors': all_authors,
+            'form': SearchBook_Form,
         }
+        return render(request, 'books/list_book_view.html', context)
+
+    def post(self, request, *args, **kwargs):
+        form = SearchBook_Form(request.POST)
+        context = {
+            'form': form,
+            'title': [],
+            # 'author': [],
+            'acquired': [],
+        }
+        if form.is_valid():
+            typed_title = form.cleaned_data['title']
+            # typed_author = form.cleaned_data['author']
+            typed_acquired = form.cleaned_data['acquired']
+
+            # filtering by typed title
+            filter_title = {'title__icontains': typed_title}
+            # filter_author = {'author__icontains': typed_author}
+            filter_acquired = {'acquired__contains': typed_acquired}
+
+            # filter_ticket_requester = {
+            #     'user_requestor__username__icontains': typed_user.username  # filtering by typed user
+            # }
+            filtered_books = Book.objects.filter(Q(**filter_title) |
+                                                 Q(**filter_acquired)).order_by('title').distinct()
+            # if not typed_user:
+            #     tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
+            #                                     Q(**filter_ticket_status)).order_by('title').distinct()
+            # else:
+            #     tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
+            #                                     Q(**filter_ticket_status)).filter(
+            #         user_requestor__username__icontains=typed_user.username
+            #     ).order_by('title').distinct()
+
+            context['filtered_books'] = filtered_books
         return render(request, 'books/list_book_view.html', context)
 
 
@@ -34,7 +70,7 @@ class AddBook_View(View):
             'form': form,
         }
         if form.is_valid():
-            # get provided title by user from
+
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
             print(f"Choosen: {title}")  # Test get title from form, etc below

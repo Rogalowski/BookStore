@@ -20,3 +20,20 @@
              </p>
 
              <h2> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h2>
+
+             {% include 'base_form.html' with form=form %}
+
+             <p>  {% for book in  filtered_books %}
+            <p>  <b>   {{ forloop.counter}})   </b>       {{ book.title }}
+             {{ book.acquired }} </p>
+{% comment %}
+                       <b>   Assignment:  </b>
+
+                          {% for assignment in ticket.user_assignment.all %}
+                          {{ assignment }}
+                             {% endfor %}
+                       </p> {% endcomment %}
+
+                     {% empty %}
+                      No products with provided <b>{{ typed_name  }} </b>  product name
+                   {% endfor %}

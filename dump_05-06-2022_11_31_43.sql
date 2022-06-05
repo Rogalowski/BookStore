@@ -798,7 +798,16 @@ COPY public.books_author (id, name) FROM stdin;
 --
 
 COPY public.books_book (id, external_id, title, description, published_year, acquired, thumbnail) FROM stdin;
-24	itrufPsnGPwFbNfy9TKuhg	ghfghfg	hfghfgh	2	t	fghfgh
+25	DUSem7Pr9BMcG4E6y8Pyzs	cvbcvb	cvbcvb	55	t	nvb
+26	MYY5QjPBCkhzy6RovdtHsq	TItle 1	Desc 1	1999	f	dfdf
+27	jvSfPhywtqtpER3CVcnUAg	Title some	description some	2000	t	fff
+28	UPTwiosiefG9PvKB6JjWfi	title 4	4 description	2008	t	fdfdf
+29	L8dGJsUaZHvqrutbWw4ETS	some other title 5	desc 5	2014	t	sdf
+30	EbZ7VazDiyhBNXv2Hck6A2	some 6 title	desc tit 6	2020	f	dsfdfg
+31	DZGSjzY4CmyfRuSEqt3ugX	title tit 7	sdfsdf	2013	f	dfgfgh
+32	JuN4iH82UxMQ3dcdfktdkp	title 7 7 titlr	descript	2018	t	dfgdfg
+33	UusmBLy6fgNZbPHvz6tMzz	title sooome 8	eight decription	1989	f	sadasf
+34	FKxyHhw9DztVM86efFTzLa	title 10	desc10	1993	f	sdfsfg
 \.
 
 
@@ -807,8 +816,24 @@ COPY public.books_book (id, external_id, title, description, published_year, acq
 --
 
 COPY public.books_book_authors (id, book_id, author_id) FROM stdin;
-13	24	2
-14	24	3
+15	25	2
+16	25	3
+17	26	4
+18	26	5
+19	27	1
+20	28	1
+21	28	2
+22	29	1
+23	29	2
+24	29	3
+25	30	2
+26	30	3
+27	31	4
+28	32	3
+29	32	5
+30	33	1
+31	33	5
+32	34	3
 \.
 
 
@@ -861,8 +886,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 18	books	0001_initial	2022-06-03 15:41:11.189009+00
 19	sessions	0001_initial	2022-06-03 15:41:11.197601+00
 20	books	0002_remove_book_year_alter_book_published_year	2022-06-03 15:54:46.199734+00
-21	books	0003_alter_book_external_id	2022-06-04 09:24:29.295192+00
-22	books	0002_remove_book_year_alter_book_external_id_and_more	2022-06-04 09:32:38.832375+00
+23	books	0002_remove_book_year_alter_book_external_id_and_more	2022-06-05 09:25:19.805912+00
 \.
 
 
@@ -927,14 +951,14 @@ SELECT pg_catalog.setval('public.books_author_id_seq', 1, false);
 -- Name: books_book_authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.books_book_authors_id_seq', 14, true);
+SELECT pg_catalog.setval('public.books_book_authors_id_seq', 32, true);
 
 
 --
 -- Name: books_book_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.books_book_id_seq', 24, true);
+SELECT pg_catalog.setval('public.books_book_id_seq', 34, true);
 
 
 --
@@ -955,7 +979,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 8, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 22, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 23, true);
 
 
 --

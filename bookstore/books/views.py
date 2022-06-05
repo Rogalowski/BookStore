@@ -57,7 +57,7 @@ class ListBook_View(View):
                            'published_year__lte': typed_year_max}
 
             filtered_books = Book.objects.filter(
-                Q(**filter_acquired) & Q(**filter_title) & Q(**filter_year) & Q(**filter_authors))
+                Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired) & Q(**filter_authors))
             print(f'filtered_books: {filtered_books}')
 
             context['filtered_books'] = filtered_books

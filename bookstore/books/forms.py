@@ -22,9 +22,21 @@ class AddBook_Form(ModelForm):
 
 
 class SearchBook_Form(ModelForm):
+    the_choices = [(a.pk, a.name) for a in Author.objects.all()]
+
     title = forms.CharField(label='Search by: title', required=False)
+    # authors = forms.CharField(required=False)
     authors = forms.ModelChoiceField(
         queryset=Author.objects.all(), required=False)
+
+    # authors = forms.MultipleChoiceField(
+    #     required=False,
+    #     widget=forms.CheckboxSelectMultiple,
+    #     choices=[*the_choices],
+    # )
+    # authors = forms.MultipleChoiceField(
+    # choices=the_choices, widget=forms.CheckboxSelectMultiple)
+
     acquired = forms.BooleanField(label='acquired', required=False)
     published_year_min = forms.IntegerField(
         label='Year, min', required=False)

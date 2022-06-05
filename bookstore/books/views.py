@@ -37,19 +37,21 @@ class ListBook_View(View):
             typed_author = form.cleaned_data['authors']
             typed_year_min = form.cleaned_data['published_year_min']
             typed_year_max = form.cleaned_data['published_year_max']
-            print(f'typed_author IF: {typed_author}')
-            if not typed_author:
-                # typed_author = Author.objects.all()
-                typed_author = 0
-                print(f'typed_author IF: {typed_author}')
+
             if not typed_year_min:
                 typed_year_min = 0
             if not typed_year_max:
                 typed_year_max = 3000
 
+            print(f'typed_author : {typed_author}')
+            if not typed_author:
+                filter_authors = {'authors': 0}
+            else:
+                filter_authors = {'authors': typed_author}
+                print(f'typed_author IF: {typed_author}')
+
             # filtering
             filter_title = {'title__icontains': typed_title}
-            filter_authors = {'authors': typed_author}
             filter_acquired = {'acquired__icontains': typed_acquired}
             filter_year = {'published_year__gte': typed_year_min,
                            'published_year__lte': typed_year_max}
@@ -57,17 +59,6 @@ class ListBook_View(View):
             filtered_books = Book.objects.filter(
                 Q(**filter_acquired) & Q(**filter_title) & Q(**filter_authors) & Q(**filter_year))
             print(f'filtered_books: {filtered_books}')
-
-            # .order_by('title').distinct()
-
-            # if not typed_user:
-            #     tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
-            #                                     Q(**filter_ticket_status)).order_by('title').distinct()
-            # else:
-            #     tickets = Ticket.objects.filter(Q(**filter_ticket_title) |
-            #                                     Q(**filter_ticket_status)).filter(
-            #         user_requestor__username__icontains=typed_user.username
-            #     ).order_by('title').distinct()
 
             context['filtered_books'] = filtered_books
         return render(request, 'books/list_book_view.html', context)

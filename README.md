@@ -43,6 +43,10 @@ stack-data==0.2.0
 traitlets==5.2.2.post1
 wcwidth==0.2.5
 
+# TECH STACK
+
+Python, Django, Jinja, Postgres
+
 # DESCRIPTION
 
 Challenge

@@ -1,0 +1,8 @@
+{% block content %}
+<b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
+<form action="" method="PATCH">
+    {% csrf_token %} {{ form }}
+    <input type="submit" value="Edit" />
+</form>
+<br />
+{{ result }} {% endblock %}

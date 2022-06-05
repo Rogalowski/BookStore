@@ -127,8 +127,8 @@ class EditBook_View(UpdateView):
     def get_success_url(self):
         return reverse('books')
 
-    def post(self, request, *args, **kwargs):
-        form = AddBook_Form(request.POST or None)
+    def patch(self, request, *args, **kwargs):
+        form = AddBook_Form(request.PATCH or None)
 
         if form.is_valid():
             title = form.cleaned_data['title']
@@ -164,7 +164,7 @@ class EditBook_View(UpdateView):
             'form': form,
             'result': f"FORM CRASHED, TRY ONE MORE TIME"
         }
-        return render(request, 'books/add_book_view.html', context)
+        return render(request, 'books/edit_book_view.html', context)
 
 
 class DeleteBook_View(DeleteView):

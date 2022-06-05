@@ -20,7 +20,7 @@ from books.views import ListBook_View, AddBook_View, EditBook_View, DeleteBook_V
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', ListBook_View.as_view(), name=""),
+    path('books/', ListBook_View.as_view(), name="books"),
     path('add_book/', AddBook_View.as_view(), name="add_book"),
     path('edit_book/<int:book_id>', EditBook_View.as_view(), name="edit_book"),
     path('delete_book/<int:book_id>',

@@ -10,19 +10,10 @@ from django.db.models import Q
 
 class ListBook_View(View):
     def get(self, request,   *args, **kwargs):
-        # book = Book.objects.get(id=kwargs['book_id'])
         all_books = Book.objects.all()
         all_authors = Author.objects.all()
 
-        context = {
-            'all_books': all_books,
-            'all_authors': all_authors,
-            'form': SearchBook_Form,
-        }
-        return render(request, 'books/list_book_view.html', context)
-
-    def post(self, request, *args, **kwargs):
-        form = SearchBook_Form(request.POST)
+        form = SearchBook_Form(request.GET)
         context = {
             'form': form,
             'title': [],
@@ -60,6 +51,8 @@ class ListBook_View(View):
                 Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired) & Q(**filter_authors))
             print(f'filtered_books: {filtered_books}')
 
+            context['all_books'] = all_books
+            context['all_authors'] = all_authors
             context['filtered_books'] = filtered_books
         return render(request, 'books/list_book_view.html', context)
 
@@ -106,7 +99,7 @@ class AddBook_View(View):
             )
             add_book.authors.add(*authors)
 
-            return redirect('')
+            return redirect('books')
 
         context = {
             'form': form,
@@ -132,7 +125,7 @@ class EditBook_View(UpdateView):
         return get_object_or_404(Book, id=id_)
 
     def get_success_url(self):
-        return reverse('')
+        return reverse('books')
 
     def post(self, request, *args, **kwargs):
         form = AddBook_Form(request.POST or None)
@@ -165,7 +158,7 @@ class EditBook_View(UpdateView):
 
             book_update.authors.set(authors)
 
-            return redirect('')
+            return redirect('books')
 
         context = {
             'form': form,
@@ -180,7 +173,7 @@ class DeleteBook_View(DeleteView):
     model = Book
 
     def get_success_url(self):
-        return reverse('')
+        return reverse('books')
 
     def get_object(self, queryset=None):
         id_ = self.kwargs.get('book_id')

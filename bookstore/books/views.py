@@ -8,7 +8,7 @@ from django.views import View
 import requests
 # from requests import request
 from .models import Author, Book
-from books.forms import AddBook_Form, SearchBook_Form
+from books.forms import AddBook_Form, SearchBook_Form, SearchBookGoogleApi_Form
 from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from rest_framework import routers, serializers, viewsets
@@ -192,9 +192,9 @@ class DeleteBook_View(DeleteView):
 
 class GoogleBooks_View(View):
 
-    form_class = SearchBook_Form
+    form_class = SearchBookGoogleApi_Form
 
-    template_name = 'books/import_book.html'
+    template_name = 'books/list_book_api_view.html'
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -215,7 +215,8 @@ class GoogleBooks_View(View):
 
     def add_book_to_library(self, bookshelf):
         for book in bookshelf:
-            print(f'BOOK: ', book['volumeInfo']['title'])
+            pass
+
             # Book.objects.get_or_create(
             # title=book['volumeInfo']['title'],
             # published_date=book['volumeInfo']['publishedDate'][:4],
@@ -226,12 +227,14 @@ class GoogleBooks_View(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(self.request.POST)
         if form.is_valid():
-            keyword = form.cleaned_data['title']
-            books = self.search(keyword)
+            title_book_api = form.cleaned_data['title']
+            books = self.search(title_book_api)
             # for book in books:
             # print(f'BOOK: ', book.id)
             # print(f'books:  ', books)
-            self.add_book_to_library(books)
+            # for book in books:
+            # print(f'BOOK: ', book['volumeInfo']['title'])
+            # self.add_book_to_library(books)
             context = {
                 'books': books,
             }

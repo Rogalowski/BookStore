@@ -1,0 +1,18 @@
+{% block content %}
+<b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
+{% include 'base_form.html' with form=form %}
+<br />
+{{ result }} {% endblock %}
+<h2>Google API books:</h2>
+<div>
+    {% for book in books %}
+
+    <li>
+        <b> {{ forloop.counter}}) </b>
+
+        <b> Title: </b> {{book.volumeInfo.title}}
+        <b> Authors:</b> {{book.volumeInfo.authors}}
+    </li>
+
+    {% endfor %}
+</div>

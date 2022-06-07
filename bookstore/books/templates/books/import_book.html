@@ -1,6 +1,0 @@
-{% block content %}
-<b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
-{% include 'base_form.html' with form=form %}
-<br />
-{{ result }} {% endblock %}
-<div>{% for book in books %} {{book.title}} {% endfor %}</div>

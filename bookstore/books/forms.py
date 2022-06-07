@@ -55,3 +55,20 @@ class SearchBook_Form(ModelForm):
         labels = {
             "title": "Search by title/status",
         }
+
+
+class SearchBookGoogleApi_Form(ModelForm):
+    the_choices = [(a.pk, a.name) for a in Author.objects.all()]
+
+    title = forms.CharField(label='Search by: title', required=False)
+    # authors = forms.CharField(required=False)
+    authors = forms.ModelChoiceField(
+        queryset=Author.objects.all(), required=False)
+
+    class Meta:
+        model = Book
+        fields = (
+            'title',
+            'authors',
+
+        )

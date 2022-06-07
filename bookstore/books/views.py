@@ -196,16 +196,27 @@ class GoogleBooks_View(View):
 
     template_name = 'books/list_book_api_view.html'
 
-    def search(self, value):
+    def search(self, keyword):
         # googleapikey = ""
         # params = {'q': value, 'key': googleapikey}
-        params = {'q': value}
+        params = {'q': keyword}
         google_books = requests.get(
             url="https://www.googleapis.com/books/v1/volumes", params=params)
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
         bookshelf = books_json['items']
+        for item in bookshelf:
+            for v in item:
+                print(f'item: ', {v})
+                if v == 'volumeInfo':
+                    bookshelf1 = v[5]
+                    print(f'bookshelf1: ', {bookshelf1})
+
+        # bookshelf1 = filter(
+        # lambda person: person['volumeInfo'] == (f'{keyword}'), bookshelf)
+        print(f'bookshelf1: ', bookshelf)
+        # bookshelf2 = books_json['items']
         # print(f'bookshelf: ', bookshelf)
         return bookshelf
 

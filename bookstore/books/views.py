@@ -1,11 +1,17 @@
+from django.http import HttpResponse, HttpResponseRedirect
+# import requests
+from django.views.generic.edit import FormView
 from webbrowser import get
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
+import requests
+# from requests import request
 from .models import Author, Book
 from books.forms import AddBook_Form, SearchBook_Form
 from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
+from rest_framework import routers, serializers, viewsets
 
 
 class ListBook_View(View):
@@ -182,3 +188,54 @@ class DeleteBook_View(DeleteView):
     def get_object(self, queryset=None):
         id_ = self.kwargs.get('book_id')
         return get_object_or_404(Book, id=id_)
+
+
+class GoogleBooks_View(View):
+
+    form_class = SearchBook_Form
+
+    template_name = 'books/import_book.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def search(self, value):
+        # googleapikey = ""
+        # params = {'q': value, 'key': googleapikey}
+        params = {'q': value}
+        google_books = requests.get(
+            url="https://www.googleapis.com/books/v1/volumes", params=params)
+
+        books_json = google_books.json()
+        # print(f'books_json: ', books_json)
+        bookshelf = books_json['items']
+        # print(f'bookshelf: ', bookshelf)
+        return bookshelf
+
+    def add_book_to_library(self, bookshelf):
+        for book in bookshelf:
+            print(f'BOOK: ', book['volumeInfo']['title'])
+            # Book.objects.get_or_create(
+            # title=book['volumeInfo']['title'],
+            # published_date=book['volumeInfo']['publishedDate'][:4],
+            # pages=book['volumeInfo']['pageCount'],
+            # language=book['volumeInfo']['language'],
+            # )
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(self.request.POST)
+        if form.is_valid():
+            keyword = form.cleaned_data['title']
+            books = self.search(keyword)
+            # for book in books:
+            # print(f'BOOK: ', book.id)
+            # print(f'books:  ', books)
+            self.add_book_to_library(books)
+            context = {
+                'books': books,
+            }
+            return render(request, self.template_name, context)
+            # return HttpResponseRedirect(reverse_lazy('google_books'))
+
+        return reverse_lazy('google_books')

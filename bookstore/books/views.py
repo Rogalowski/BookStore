@@ -45,16 +45,17 @@ class ListBook_View(View):
                            'published_year__lte': typed_year_max}
 
             if not typed_author:
-                filtered_books = Book.objects.filter(filter_acquired)
+                filtered_books = Book.objects.filter(
+                    Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired))
                 print(f'filtered_books: {filtered_books}')
                 context['filtered_books'] = filtered_books
                 return render(request, 'books/list_book_view.html', context)
             else:
                 filter_authors = {'authors': typed_author}
                 print(f'typed_author IF: {typed_author}')
-                filtered_books = Book.objects.filter(
-                    Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired) & Q(**filter_authors))
-                print(f'filtered_books: {filtered_books}')
+            filtered_books = Book.objects.filter(
+                Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired) & Q(**filter_authors))
+            print(f'filtered_books: {filtered_books}')
 
             context['filtered_books'] = filtered_books
         return render(request, 'books/list_book_view.html', context)

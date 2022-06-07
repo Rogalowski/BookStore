@@ -192,13 +192,9 @@ class DeleteBook_View(DeleteView):
 
 class GoogleBooks_View(View):
 
-    form_class = SearchBookGoogleApi_Form
+    # form_class = SearchBookGoogleApi_Form
 
     template_name = 'books/list_book_api_view.html'
-
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
 
     def search(self, value):
         # googleapikey = ""
@@ -213,32 +209,46 @@ class GoogleBooks_View(View):
         # print(f'bookshelf: ', bookshelf)
         return bookshelf
 
-    def add_book_to_library(self, bookshelf):
-        for book in bookshelf:
-            pass
+    def get(self, request, *args, **kwargs):
 
-            # Book.objects.get_or_create(
-            # title=book['volumeInfo']['title'],
-            # published_date=book['volumeInfo']['publishedDate'][:4],
-            # pages=book['volumeInfo']['pageCount'],
-            # language=book['volumeInfo']['language'],
-            # )
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(self.request.POST)
+        form = SearchBookGoogleApi_Form(request.GET or None)
         if form.is_valid():
-            title_book_api = form.cleaned_data['title']
+            title_book_api = form.cleaned_data['q']
             books = self.search(title_book_api)
-            # for book in books:
-            # print(f'BOOK: ', book.id)
-            # print(f'books:  ', books)
-            # for book in books:
-            # print(f'BOOK: ', book['volumeInfo']['title'])
-            # self.add_book_to_library(books)
             context = {
                 'books': books,
+                'form': form,
             }
             return render(request, self.template_name, context)
-            # return HttpResponseRedirect(reverse_lazy('google_books'))
+        # form = self.form()
+        return render(request, self.template_name, {'form': form})
 
-        return reverse_lazy('google_books')
+    # def add_book_to_library(self, bookshelf):
+    #     for book in bookshelf:
+    #         pass
+
+        # Book.objects.get_or_create(
+        # title=book['volumeInfo']['title'],
+        # published_date=book['volumeInfo']['publishedDate'][:4],
+        # pages=book['volumeInfo']['pageCount'],
+        # language=book['volumeInfo']['language'],
+        # )
+
+    # def post(self, request, *args, **kwargs):
+    #     form = self.form_class(self.request.POST)
+    #     if form.is_valid():
+    #         title_book_api = form.cleaned_data['title']
+    #         books = self.search(title_book_api)
+    #         # for book in books:
+    #         # print(f'BOOK: ', book.id)
+    #         # print(f'books:  ', books)
+    #         # for book in books:
+    #         # print(f'BOOK: ', book['volumeInfo']['title'])
+    #         # self.add_book_to_library(books)
+    #         context = {
+    #             'books': books,
+    #         }
+    #         return render(request, self.template_name, context)
+    #         # return HttpResponseRedirect(reverse_lazy('google_books'))
+
+    #     return reverse_lazy('google_books')

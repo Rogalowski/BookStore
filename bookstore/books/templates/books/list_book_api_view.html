@@ -1,6 +1,9 @@
-{% block content %}
-<b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
-{% include 'base_form.html' with form=form %} {% endblock %}
+<h1><a href="{% url 'books'   %} "> Local books</a></h1>
+
+<form action="" method="get">
+    {% comment %} {% csrf_token %} {% endcomment %} {{ form }}
+    <input type="submit" value="Search" />
+</form>
 <h2>Google API books:</h2>
 <div>
     {% for book in books %}

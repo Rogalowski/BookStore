@@ -206,17 +206,21 @@ class GoogleBooks_View(View):
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
-        aa = []
+        list_found_authors = []
+        unpacked_list_found_authors = []
         bookshelf = books_json['items']
+
         for item in bookshelf:
             keys, values = zip(*item.items())
-            # print(values[4].get('authors'))
-            bookshelf1 = values[4].get('authors')
-            aa.append(bookshelf1)
-        print(*aa)
+            bookshelf_authors = values[4].get('authors')
+            unpacked_list_found_authors += bookshelf_authors
+            list_found_authors.append(bookshelf_authors)
 
-        # return bookshelf
-        return aa
+        print('AUTHORS books_json:', books_json)
+        print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
+        print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
+
+        return bookshelf
 
     def get(self, request, *args, **kwargs):
 

@@ -1,3 +1,4 @@
+from pickle import APPEND
 from django.http import HttpResponse, HttpResponseRedirect
 # import requests
 from django.views.generic.edit import FormView
@@ -205,20 +206,17 @@ class GoogleBooks_View(View):
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
+        aa = []
         bookshelf = books_json['items']
         for item in bookshelf:
-            for v in item:
-                print(f'item: ', {v})
-                if v == 'volumeInfo':
-                    bookshelf1 = v[5]
-                    print(f'bookshelf1: ', {bookshelf1})
+            keys, values = zip(*item.items())
+            # print(values[4].get('authors'))
+            bookshelf1 = values[4].get('authors')
+            aa.append(bookshelf1)
+        print(*aa)
 
-        # bookshelf1 = filter(
-        # lambda person: person['volumeInfo'] == (f'{keyword}'), bookshelf)
-        print(f'bookshelf1: ', bookshelf)
-        # bookshelf2 = books_json['items']
-        # print(f'bookshelf: ', bookshelf)
-        return bookshelf
+        # return bookshelf
+        return aa
 
     def get(self, request, *args, **kwargs):
 
@@ -226,6 +224,7 @@ class GoogleBooks_View(View):
         if form.is_valid():
             title_book_api = form.cleaned_data['q']
             books = self.search(title_book_api)
+            # print(f'BOOKS: ', {books})
             context = {
                 'books': books,
                 'form': form,

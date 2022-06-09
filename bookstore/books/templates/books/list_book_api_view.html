@@ -11,8 +11,14 @@
     <li>
         <b> {{ forloop.counter}}) </b>
 
-        <b> Title: </b> {{book.volumeInfo.title}}
-        <b> Authors:</b> {{book.volumeInfo.authors}}
+        <b> Title: </b>
+        <a href="https://books.google.pl/books?id={{book.id}}"
+            >{{book.volumeInfo.title}}</a
+        >
+        <b> Authors:</b> {{book.volumeInfo.authors|cut:"']"|cut:"['"|cut:"'" }}
+        <br />
+        <b> Image:</b>
+        <img src="{{book.volumeInfo.imageLinks.thumbnail}}" alt="No Image" />
     </li>
 
     {% endfor %}

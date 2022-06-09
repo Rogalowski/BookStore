@@ -212,8 +212,12 @@ class GoogleBooks_View(View):
 
         for item in bookshelf:
             keys, values = zip(*item.items())
+
             bookshelf_authors = values[4].get('authors')
-            unpacked_list_found_authors += bookshelf_authors
+            if bookshelf_authors is not None:
+                unpacked_list_found_authors += bookshelf_authors
+            else:
+                bookshelf_authors = values[4].get('authors')
             list_found_authors.append(bookshelf_authors)
 
         print('AUTHORS books_json:', books_json)

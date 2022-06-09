@@ -15,7 +15,12 @@
     <li>
      <p>
       <div>
-      <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  <b>  Title: </b>    {{ book.title}}
+      <b>   {{ forloop.counter}})   </b>
+       {% comment %} {{book.external_id}}   {% endcomment %}
+      <b>  Title: </b>
+      <a href="https://books.google.pl/books?id={{book.id}}"
+      >{{book.title}}</a
+  >
       <b>    Description: </b>  {{ book.description }}
       </div>
       <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
@@ -24,6 +29,8 @@
 
     {{author}}
     {%endfor%}
+    <b> Image:</b>
+    <img src="{{book.thumbnail}}" alt="No Image" />
     <div>
        <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a>
       &nbsp <a href="{% url 'delete_book' book.id %} " > DELETE BOOK </a>
@@ -47,7 +54,12 @@
   <ul>
   <li>
    <p>  <div>
-    <b>   {{ forloop.counter}})   </b>  {{book.external_id}}  <b>  Title: </b>    {{ book.title}}
+    <b>   {{ forloop.counter}})   </b>
+    {% comment %} {{book.external_id}}  {% endcomment %}
+     <b>  Title: </b>
+      <a href="https://books.google.pl/books?id={{book.external_id}}"
+      >{{book.title}}</a
+  >
     <b>    Description: </b>  {{ book.description }}
     </div>
     <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
@@ -56,7 +68,9 @@
 
   {{author}}
   {%endfor%}
-
+  <br>
+  <b> Image:</b>
+  <img src="{{book.thumbnail}}" alt="No Image" />
   </li>
 </ul>
 <h4>  <a href="{% url 'edit_book' book.id %} " > EDIT BOOK </a>

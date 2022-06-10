@@ -202,14 +202,33 @@ class GoogleBooks_View(View):
         # params = {'q': value, 'key': googleapikey}
         # params = {'q': keyword}
         google_books = requests.get(
-            url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=20')
+            url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=5')
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
-        list_found_authors = []
-        unpacked_list_found_authors = []
+        print('BOOKS JSON: ', books_json)
         bookshelf = books_json['items']
 
+        return bookshelf
+
+    def get(self, request, *args, **kwargs):
+
+        form = SearchBookGoogleApi_Form(request.GET or None)
+        if form.is_valid():
+            title_book_api = form.cleaned_data['q']
+            authors_book_api = form.cleaned_data['authors']
+            books = self.search(title_book_api, authors_book_api)
+            # print(f'BOOKS: ', {books})
+            context = {
+                'books': books,
+                'form': form,
+            }
+            return render(request, self.template_name, context)
+        return render(request, self.template_name, {'form': form})
+
+    def add_books_to_library(self, bookshelf):
+        list_found_authors = []
+        unpacked_list_found_authors = []
         for item in bookshelf:
             keys, values = zip(*item.items())
 
@@ -220,54 +239,39 @@ class GoogleBooks_View(View):
                 bookshelf_authors = values[4].get('authors')
             list_found_authors.append(bookshelf_authors)
 
-        print('AUTHORS books_json:', books_json)
-        print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
-        print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
+            print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
+            print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
 
-        return bookshelf
+            Book.objects.get_or_create(
+                external_id="DUSem7Pr9BMcG4E6y8Pyzs",
+                title=bookshelf['volumeInfo']['title'],
+                description="DEFAULT",
+                published_date=bookshelf['volumeInfo']['publishedDate'][:4],
+                acquired=False,
+                thumbnail="DEFAULT"
 
-    def get(self, request, *args, **kwargs):
 
-        form = SearchBookGoogleApi_Form(request.GET or None)
+            )
+
+    def post(self,  request,  *args, **kwargs):
+        form = SearchBookGoogleApi_Form(request.POST or None)
         if form.is_valid():
-            title_book_api = form.cleaned_data['title']
+            #     title_book_api = form.cleaned_data['title']
+            #     books = self.search(title_book_api)
+            # for book in books:
+            # print(f'BOOK: ', book.id)
+            # print(f'books:  ', books)
+            # for book in books:
+            # print(f'BOOK: ', book['volumeInfo']['title'])
+            title_book_api = form.cleaned_data['q']
             authors_book_api = form.cleaned_data['authors']
             books = self.search(title_book_api, authors_book_api)
-            # print(f'BOOKS: ', {books})
-            context = {
-                'books': books,
-                'form': form,
-            }
-            return render(request, self.template_name, context)
-        # form = self.form()
-        return render(request, self.template_name, {'form': form})
+            self.add_books_to_library(books)
+            return HttpResponseRedirect(reverse_lazy('books'))
+        # context = {
+        # 'books': books,
+        # }
+        # return render(request, self.template_name, context)
+        # return HttpResponseRedirect(reverse_lazy('google_books'))
 
-    # def add_book_to_library(self, bookshelf):
-    #     for book in bookshelf:
-    #         pass
-
-        # Book.objects.get_or_create(
-        # title=book['volumeInfo']['title'],
-        # published_date=book['volumeInfo']['publishedDate'][:4],
-        # pages=book['volumeInfo']['pageCount'],
-        # language=book['volumeInfo']['language'],
-        # )
-
-    # def post(self, request, *args, **kwargs):
-    #     form = self.form_class(self.request.POST)
-    #     if form.is_valid():
-    #         title_book_api = form.cleaned_data['title']
-    #         books = self.search(title_book_api)
-    #         # for book in books:
-    #         # print(f'BOOK: ', book.id)
-    #         # print(f'books:  ', books)
-    #         # for book in books:
-    #         # print(f'BOOK: ', book['volumeInfo']['title'])
-    #         # self.add_book_to_library(books)
-    #         context = {
-    #             'books': books,
-    #         }
-    #         return render(request, self.template_name, context)
-    #         # return HttpResponseRedirect(reverse_lazy('google_books'))
-
-    #     return reverse_lazy('google_books')
+        return reverse_lazy('google_books')

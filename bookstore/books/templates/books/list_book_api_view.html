@@ -1,4 +1,4 @@
-<h1><a href="{% url 'books'   %} "> Local books</a></h1>
+<h1><a href="{% url 'books'   %} "> Your Library</a></h1>
 
 <form action="" method="get">
     {% comment %} {% csrf_token %} {% endcomment %} {{ form }}
@@ -20,6 +20,11 @@
         <b> Image:</b>
         <img src="{{book.volumeInfo.imageLinks.thumbnail}}" alt="No Image" />
     </li>
-
     {% endfor %}
+
+    {% comment %} <form action="{% url 'books'%}" method="post"> {% endcomment %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="IMPORT BOOKS" />
+    </form>
 </div>

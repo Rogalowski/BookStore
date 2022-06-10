@@ -197,12 +197,14 @@ class GoogleBooks_View(View):
 
     template_name = 'books/list_book_api_view.html'
 
-    def search(self, title_book_api, authors_book_api):
+    # def search(self, title_book_api, authors_book_api):
+    def search(self, title_book_api):
         # googleapikey = ""
         # params = {'q': value, 'key': googleapikey}
-        # params = {'q': keyword}
+        params = {'q': title_book_api}
         google_books = requests.get(
-            url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=5')
+            url=f'https://www.googleapis.com/books/v1/volumes', params=params)
+        # url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=5')
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
@@ -216,8 +218,9 @@ class GoogleBooks_View(View):
         form = SearchBookGoogleApi_Form(request.GET or None)
         if form.is_valid():
             title_book_api = form.cleaned_data['q']
-            authors_book_api = form.cleaned_data['authors']
-            books = self.search(title_book_api, authors_book_api)
+            # authors_book_api = form.cleaned_data['authors']
+            # books = self.search(title_book_api, authors_book_api)
+            books = self.search(title_book_api)
             # print(f'BOOKS: ', {books})
             context = {
                 'books': books,
@@ -242,16 +245,28 @@ class GoogleBooks_View(View):
             print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
             print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
 
-            Book.objects.get_or_create(
-                external_id="DUSem7Pr9BMcG4E6y8Pyzs",
-                title=bookshelf['volumeInfo']['title'],
-                description="DEFAULT",
-                published_date=bookshelf['volumeInfo']['publishedDate'][:4],
-                acquired=False,
-                thumbnail="DEFAULT"
+            external_id = item['id']
+            title = item['volumeInfo']['title']
+            authors = item['volumeInfo']['authors']
+            published_year = item['volumeInfo']['publishedDate'][:4]
+            acquired = False
+            thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
+            try:
+                description = item['volumeInfo']['subtitle']
 
-
+            except KeyError:
+                description = ""
+            print("DESCRIPTION ", description)
+            import_book = Book.objects.get_or_create(
+                external_id=external_id,
+                title=title,
+                description=description,
+                published_year=published_year,
+                acquired=acquired,
+                thumbnail=thumbnail
             )
+            import_book.authors.add(*authors)
+            # update_import_book.authors.set(authors)
 
     def post(self,  request,  *args, **kwargs):
         form = SearchBookGoogleApi_Form(request.POST or None)
@@ -264,8 +279,9 @@ class GoogleBooks_View(View):
             # for book in books:
             # print(f'BOOK: ', book['volumeInfo']['title'])
             title_book_api = form.cleaned_data['q']
-            authors_book_api = form.cleaned_data['authors']
-            books = self.search(title_book_api, authors_book_api)
+            # authors_book_api = form.cleaned_data['authors']
+            # books = self.search(title_book_api, authors_book_api)
+            books = self.search(title_book_api)
             self.add_books_to_library(books)
             return HttpResponseRedirect(reverse_lazy('books'))
         # context = {

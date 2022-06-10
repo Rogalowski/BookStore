@@ -251,12 +251,17 @@ class GoogleBooks_View(View):
             published_year = item['volumeInfo']['publishedDate'][:4]
             acquired = False
             thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
+            print(" item['volumeInfo']['authors'] ",
+                  item['volumeInfo']['authors'])
             try:
                 description = item['volumeInfo']['subtitle']
 
             except KeyError:
                 description = ""
             print("DESCRIPTION ", description)
+            add_authors = Author.objects.create(
+                name=unpacked_list_found_authors[-1]
+            )
             import_book = Book.objects.get_or_create(
                 external_id=external_id,
                 title=title,
@@ -265,7 +270,8 @@ class GoogleBooks_View(View):
                 acquired=acquired,
                 thumbnail=thumbnail
             )
-            import_book.authors.add(*authors)
+            print("import_book.authors.add(*authors) ", *authors)
+            # import_book.authors.add(*authors)
             # update_import_book.authors.set(authors)
 
     def post(self,  request,  *args, **kwargs):

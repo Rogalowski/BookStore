@@ -197,12 +197,12 @@ class GoogleBooks_View(View):
 
     template_name = 'books/list_book_api_view.html'
 
-    def search(self, keyword):
+    def search(self, title_book_api, authors_book_api):
         # googleapikey = ""
         # params = {'q': value, 'key': googleapikey}
-        params = {'q': keyword}
+        # params = {'q': keyword}
         google_books = requests.get(
-            url="https://www.googleapis.com/books/v1/volumes", params=params)
+            url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=20')
 
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
@@ -230,8 +230,9 @@ class GoogleBooks_View(View):
 
         form = SearchBookGoogleApi_Form(request.GET or None)
         if form.is_valid():
-            title_book_api = form.cleaned_data['q']
-            books = self.search(title_book_api)
+            title_book_api = form.cleaned_data['title']
+            authors_book_api = form.cleaned_data['authors']
+            books = self.search(title_book_api, authors_book_api)
             # print(f'BOOKS: ', {books})
             context = {
                 'books': books,

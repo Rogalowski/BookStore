@@ -1,3 +1,4 @@
+
 from django.forms import ModelForm
 from django import forms
 from books.models import Author, Book
@@ -60,15 +61,15 @@ class SearchBook_Form(ModelForm):
 class SearchBookGoogleApi_Form(ModelForm):
     # the_choices = [(a.pk, a.name) for a in Author.objects.all()]
 
-    q = forms.CharField(label='Search by authors', required=True)
-    # authors = forms.CharField(required=False)
+    title = forms.CharField(label='Search by title', required=False)
+    authors = forms.CharField(label='Search by authors', required=False)
     # authors = forms.ModelChoiceField(
     #     queryset=Author.objects.all(), required=False)
 
     class Meta:
         model = Book
         fields = (
-            'q',
-            # 'authors',
+            'title',
+            'authors',
 
         )

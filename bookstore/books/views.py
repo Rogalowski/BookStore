@@ -12,6 +12,7 @@ from .models import Author, Book
 from books.forms import AddBook_Form, SearchBook_Form, SearchBookGoogleApi_Form
 from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
+from django.db.utils import IntegrityError
 from rest_framework import routers, serializers, viewsets
 
 
@@ -259,9 +260,13 @@ class GoogleBooks_View(View):
             except KeyError:
                 description = ""
             print("DESCRIPTION ", description)
-            add_authors = Author.objects.create(
-                name=unpacked_list_found_authors[-1]
-            )
+            try:
+                add_authors = Author.objects.create(
+                    name=unpacked_list_found_authors[-1]
+                )
+            except IntegrityError:
+                pass
+
             import_book = Book.objects.get_or_create(
                 external_id=external_id,
                 title=title,
@@ -271,8 +276,14 @@ class GoogleBooks_View(View):
                 thumbnail=thumbnail
             )
             print("import_book.authors.add(*authors) ", *authors)
-            # import_book.authors.add(*authors)
-            # update_import_book.authors.set(authors)
+
+            aa = Author.objects.filter(
+                name=unpacked_list_found_authors[-1])
+            print("Book.objects.filter(authors=list_found_authors): ", aa)
+            import_book.authors.add(aa)
+            # import_book.authors.set(*aa)
+
+    # update_import_book.authors.set(authors)
 
     def post(self,  request,  *args, **kwargs):
         form = SearchBookGoogleApi_Form(request.POST or None)

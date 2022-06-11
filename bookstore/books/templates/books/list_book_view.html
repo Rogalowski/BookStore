@@ -25,7 +25,7 @@
       </div>
       <b> Published:  </b>  {{book.published_year}} <b> Acquired: </b> {{book.acquired}}
         <b> Authors: </b>
-    {% for author in book.authors.all %}
+    {% for author in book.authors.all  %}
 
     {{author}}
     {%endfor%}

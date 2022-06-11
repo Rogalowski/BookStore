@@ -28,7 +28,7 @@ class SearchBook_Form(ModelForm):
     title = forms.CharField(label='Search by: title', required=False)
     # authors = forms.CharField(required=False)
     authors = forms.ModelChoiceField(
-        queryset=Author.objects.all(), required=False)
+        queryset=Author.objects.order_by('name'), required=False)
 
     # authors = forms.MultipleChoiceField(
     #     required=False,

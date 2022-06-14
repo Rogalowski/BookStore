@@ -14,6 +14,7 @@ from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import routers, serializers, viewsets
+import nltk
 
 
 class ListBook_View(View):
@@ -260,10 +261,17 @@ class GoogleBooks_View(View):
             except KeyError:
                 description = ""
             print("DESCRIPTION ", description)
+            bb = ", ".join(bookshelf_authors)
+            print('BB: ', bb)
             try:
-                add_authors_to_model = Author.objects.get_or_create(
-                    name=unpacked_list_found_authors[-1]
-                )
+                # add_authors_to_model = Author.objects.get_or_create(
+                #     name=unpacked_list_found_authors[-1]
+                # )
+                for one in authors_temp:
+
+                    add_authors_to_model = Author.objects.get_or_create(
+                        name=one
+                    )
             except IntegrityError:
                 pass
 
@@ -276,13 +284,14 @@ class GoogleBooks_View(View):
                 thumbnail=thumbnail
             )
 
-            bb = ",".join([*bookshelf_authors])
-            print("converted_list: ", [bb])
-
+            print("converted_list: ", bookshelf_authors)
+            stry = ['Adam Sapkowski', 'Vijaya Khisty Bodach']
+            print('authors_temp:', authors_temp)
+            print('stry: ', stry)
             aa = Author.objects.filter(
-                name__in=[bb])
+                name__in=[*authors_temp])
             print("Book.objects.filter(authors=list_found_authors): ",
-                  ", ".join([*bookshelf_authors]))
+                  ", ".join(bookshelf_authors))
 
             import_book.authors.add(*aa)
         # import_book.authors.add(*item['volumeInfo']['authors'])

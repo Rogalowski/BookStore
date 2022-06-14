@@ -243,17 +243,17 @@ class GoogleBooks_View(View):
                 bookshelf_authors = values[4].get('authors')
             list_found_authors.append(bookshelf_authors)
 
-            print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
+            # print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
             print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
 
             external_id = item['id']
             title = item['volumeInfo']['title']
-            authors = item['volumeInfo']['authors']
+            authors_temp = item['volumeInfo']['authors']
             published_year = item['volumeInfo']['publishedDate'][:4]
             acquired = False
             thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
             print(" item['volumeInfo']['authors'] ",
-                  item['volumeInfo']['authors'])
+                  *item['volumeInfo']['authors'],)
             try:
                 description = item['volumeInfo']['subtitle']
 
@@ -261,13 +261,13 @@ class GoogleBooks_View(View):
                 description = ""
             print("DESCRIPTION ", description)
             try:
-                add_authors = Author.objects.create(
+                add_authors_to_model = Author.objects.get_or_create(
                     name=unpacked_list_found_authors[-1]
                 )
             except IntegrityError:
                 pass
 
-            import_book = Book.objects.get_or_create(
+            import_book = Book.objects.create(
                 external_id=external_id,
                 title=title,
                 description=description,
@@ -275,13 +275,18 @@ class GoogleBooks_View(View):
                 acquired=acquired,
                 thumbnail=thumbnail
             )
-            print("import_book.authors.add(*authors) ", *authors)
+
+            bb = ",".join([*bookshelf_authors])
+            print("converted_list: ", [bb])
 
             aa = Author.objects.filter(
-                name=unpacked_list_found_authors[-1])
-            print("Book.objects.filter(authors=list_found_authors): ", aa)
-            import_book.authors.add(aa)
-            # import_book.authors.set(*aa)
+                name__in=[bb])
+            print("Book.objects.filter(authors=list_found_authors): ",
+                  ", ".join([*bookshelf_authors]))
+
+            import_book.authors.add(*aa)
+        # import_book.authors.add(*item['volumeInfo']['authors'])
+        # import_book.authors.add(1, 2, 3)
 
     # update_import_book.authors.set(authors)
 

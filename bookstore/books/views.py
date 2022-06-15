@@ -14,7 +14,7 @@ from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import routers, serializers, viewsets
-import nltk
+from django.contrib import messages
 
 
 class ListBook_View(View):
@@ -231,44 +231,28 @@ class GoogleBooks_View(View):
             return render(request, self.template_name, context)
         return render(request, self.template_name, {'form': form})
 
-    def add_books_to_library(self, bookshelf):
-        list_found_authors = []
-        unpacked_list_found_authors = []
+    def add_books_to_library(self, request, bookshelf):
+        i = 0
         for item in bookshelf:
-            keys, values = zip(*item.items())
-
-            bookshelf_authors = values[4].get('authors')
-            if bookshelf_authors is not None:
-                unpacked_list_found_authors += bookshelf_authors
-            else:
-                bookshelf_authors = values[4].get('authors')
-            list_found_authors.append(bookshelf_authors)
-
-            # print('AUTHORS FOUND TO BOOKS:', *list_found_authors)
-            print('UNPACKED AUTHORS FOUND :', unpacked_list_found_authors)
-
+            i += 1
             external_id = item['id']
             title = item['volumeInfo']['title']
-            authors_temp = item['volumeInfo']['authors']
+            try:
+                authors_temp = item['volumeInfo']['authors']
+            except KeyError:
+                authors_temp = ""
             published_year = item['volumeInfo']['publishedDate'][:4]
             acquired = False
             thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
-            print(" item['volumeInfo']['authors'] ",
-                  *item['volumeInfo']['authors'],)
+            print(" authors_temp ", authors_temp)
+
             try:
                 description = item['volumeInfo']['subtitle']
-
             except KeyError:
                 description = ""
-            print("DESCRIPTION ", description)
-            bb = ", ".join(bookshelf_authors)
-            print('BB: ', bb)
-            try:
-                # add_authors_to_model = Author.objects.get_or_create(
-                #     name=unpacked_list_found_authors[-1]
-                # )
-                for one in authors_temp:
 
+            try:
+                for one in authors_temp:
                     add_authors_to_model = Author.objects.get_or_create(
                         name=one
                     )
@@ -284,20 +268,12 @@ class GoogleBooks_View(View):
                 thumbnail=thumbnail
             )
 
-            print("converted_list: ", bookshelf_authors)
-            stry = ['Adam Sapkowski', 'Vijaya Khisty Bodach']
-            print('authors_temp:', authors_temp)
-            print('stry: ', stry)
-            aa = Author.objects.filter(
+            authors_filtered_book = Author.objects.filter(
                 name__in=[*authors_temp])
-            print("Book.objects.filter(authors=list_found_authors): ",
-                  ", ".join(bookshelf_authors))
-
-            import_book.authors.add(*aa)
-        # import_book.authors.add(*item['volumeInfo']['authors'])
-        # import_book.authors.add(1, 2, 3)
-
-    # update_import_book.authors.set(authors)
+            import_book.authors.add(*authors_filtered_book)
+        messages.add_message(request, messages.INFO,
+                             f'YOU HAVE IMPORTED {i} BOOKS')
+        print("COUNT: ", i)
 
     def post(self,  request,  *args, **kwargs):
         form = SearchBookGoogleApi_Form(request.POST or None)
@@ -313,7 +289,8 @@ class GoogleBooks_View(View):
             # authors_book_api = form.cleaned_data['authors']
             # books = self.search(title_book_api, authors_book_api)
             books = self.search(title_book_api)
-            self.add_books_to_library(books)
+            self.add_books_to_library(request, books)
+
             return HttpResponseRedirect(reverse_lazy('books'))
         # context = {
         # 'books': books,

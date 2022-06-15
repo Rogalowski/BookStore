@@ -5,6 +5,13 @@
     <input type="submit" value="Search" />
 </form>
 <h2>Google API books:</h2>
+
+{% if messages %}
+<h2 class="messages">
+    {% for message in messages %}  {{ message }}   {% endfor %}
+</h2>
+{% endif %}
+
 <div>
     {% for book in books %}
 

@@ -200,7 +200,7 @@ class GoogleBooks_View(View):
     template_name = 'books/list_book_api_view.html'
 
     # def search(self, title_book_api, authors_book_api):
-    def search(self, title_book_api):
+    def search(self, request, title_book_api):
         # googleapikey = ""
         # params = {'q': value, 'key': googleapikey}
         params = {'q': title_book_api}
@@ -211,8 +211,13 @@ class GoogleBooks_View(View):
         books_json = google_books.json()
         # print(f'books_json: ', books_json)
         print('BOOKS JSON: ', books_json)
-        bookshelf = books_json['items']
+        try:
 
+            bookshelf = books_json['items']
+        except KeyError:
+            messages.add_message(request, messages.INFO,
+                                 f'LOOKS LIKE, NOT FOUND BOOKS')
+            return reverse_lazy('google_books')
         return bookshelf
 
     def get(self, request, *args, **kwargs):
@@ -222,7 +227,7 @@ class GoogleBooks_View(View):
             title_book_api = form.cleaned_data['q']
             # authors_book_api = form.cleaned_data['authors']
             # books = self.search(title_book_api, authors_book_api)
-            books = self.search(title_book_api)
+            books = self.search(request, title_book_api)
             # print(f'BOOKS: ', {books})
             context = {
                 'books': books,
@@ -232,18 +237,31 @@ class GoogleBooks_View(View):
         return render(request, self.template_name, {'form': form})
 
     def add_books_to_library(self, request, bookshelf):
-        i = 0
+        loop_number = 0
         for item in bookshelf:
-            i += 1
-            external_id = item['id']
+            loop_number += 1
+            try:
+                external_id = item['id']
+            except TypeError:
+                messages.add_message(request, messages.INFO,
+                                     f'NO IMPORTED BOOKS.')
+                return reverse_lazy('google_books')
+
             title = item['volumeInfo']['title']
             try:
                 authors_temp = item['volumeInfo']['authors']
             except KeyError:
-                authors_temp = ""
-            published_year = item['volumeInfo']['publishedDate'][:4]
+                authors_temp = ['']
+            try:
+                published_year = item['volumeInfo']['publishedDate'][:4]
+            except KeyError:
+                published_year = 0
             acquired = False
-            thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
+            try:
+                thumbnail = item['volumeInfo']['imageLinks']['thumbnail']
+            except KeyError:
+                thumbnail = f'https://www.buckinghambooks.com/static/basic_cms_store2/img/CoverNotFound2.jpg'
+
             print(" authors_temp ", authors_temp)
 
             try:
@@ -258,22 +276,50 @@ class GoogleBooks_View(View):
                     )
             except IntegrityError:
                 pass
-
-            import_book = Book.objects.create(
-                external_id=external_id,
-                title=title,
-                description=description,
-                published_year=published_year,
-                acquired=acquired,
-                thumbnail=thumbnail
-            )
-
+            # book_update = Book.objects.get(id=kwargs['book_id'])
             authors_filtered_book = Author.objects.filter(
                 name__in=[*authors_temp])
+
+            if Book.objects.filter(external_id=external_id).exists():
+                loop_number -= 1
+                import_book = Book.objects.get(external_id=external_id)
+                import_book.title = title
+                import_book.description = description
+                import_book.published_year = published_year
+                import_book.acquired = acquired
+                import_book.thumbnail = thumbnail
+                import_book.save()
+                import_book.authors.set(authors_filtered_book)
+            else:
+                import_book = Book.objects.create(
+                    external_id=external_id,
+                    title=title,
+                    description=description,
+                    published_year=published_year,
+                    acquired=acquired,
+                    thumbnail=thumbnail,
+
+                )
+            # import_book.title = title,
+            # import_book.description = description,
+            # import_book.published_year = published_year,
+            # import_book.acquired = acquired,
+            # import_book.thumbnail = thumbnail
+            # import_book.save()
+            # import_book = Book.objects.create(
+            #     external_id=external_id,
+            #     title=title,
+            #     description=description,
+            #     published_year=published_year,
+            #     acquired=acquired,
+            #     thumbnail=thumbnail
+            # )
+
+            # import_book.authors.add(*authors_filtered_book)
             import_book.authors.add(*authors_filtered_book)
         messages.add_message(request, messages.INFO,
-                             f'YOU HAVE IMPORTED {i} BOOKS')
-        print("COUNT: ", i)
+                             f'YOU HAVE  IMPORTED {loop_number} BOOKS.')
+        print("COUNT: ", loop_number)
 
     def post(self,  request,  *args, **kwargs):
         form = SearchBookGoogleApi_Form(request.POST or None)
@@ -288,7 +334,7 @@ class GoogleBooks_View(View):
             title_book_api = form.cleaned_data['q']
             # authors_book_api = form.cleaned_data['authors']
             # books = self.search(title_book_api, authors_book_api)
-            books = self.search(title_book_api)
+            books = self.search(request, title_book_api)
             self.add_books_to_library(request, books)
 
             return HttpResponseRedirect(reverse_lazy('books'))

@@ -270,9 +270,9 @@ class GoogleBooks_View(View):
                 description = ""
 
             try:
-                for one in authors_temp:
+                for author in authors_temp:
                     add_authors_to_model = Author.objects.get_or_create(
-                        name=one
+                        name=author
                     )
             except IntegrityError:
                 pass
@@ -300,6 +300,7 @@ class GoogleBooks_View(View):
                     thumbnail=thumbnail,
 
                 )
+                import_book.authors.add(*authors_filtered_book)
             # import_book.title = title,
             # import_book.description = description,
             # import_book.published_year = published_year,
@@ -316,7 +317,7 @@ class GoogleBooks_View(View):
             # )
 
             # import_book.authors.add(*authors_filtered_book)
-            import_book.authors.add(*authors_filtered_book)
+
         messages.add_message(request, messages.INFO,
                              f'YOU HAVE  IMPORTED {loop_number} BOOKS.')
         print("COUNT: ", loop_number)

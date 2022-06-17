@@ -6,6 +6,7 @@ from webbrowser import get
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
+# from html5lib import serialize
 import requests
 # from requests import request
 from .models import Author, Book
@@ -13,7 +14,8 @@ from books.forms import AddBook_Form, SearchBook_Form, SearchBookGoogleApi_Form
 from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from django.db.utils import IntegrityError
-from rest_framework import routers, serializers, viewsets
+from rest_framework import viewsets
+from .serializers import BookSerializer, AuthorSerializer
 from django.contrib import messages
 
 
@@ -346,3 +348,13 @@ class GoogleBooks_View(View):
         # return HttpResponseRedirect(reverse_lazy('google_books'))
 
         return reverse_lazy('google_books')
+
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer

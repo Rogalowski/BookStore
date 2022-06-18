@@ -14,15 +14,16 @@ class Author(models.Model):
 
 class Book(models.Model):
     external_id = ShortUUIDField(
-        max_length=10,
+        max_length=10, default=None, blank=True, null=True
         # primary_key=True,
     )
     # external_id = models.UUIDField(
     #     default=uuid.uuid4,
     #     editable=False)
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(default="")
     authors = models.ManyToManyField(Author)
     published_year = models.SmallIntegerField(default=0)
-    acquired = models.BooleanField()
-    thumbnail = models.TextField(max_length=2048)
+    acquired = models.BooleanField(default=False)
+    thumbnail = models.TextField(
+        max_length=2048, default=None, blank=True, null=True)

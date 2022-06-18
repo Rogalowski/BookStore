@@ -15,6 +15,10 @@ from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.versioning import URLPathVersioning
+from rest_framework.views import APIView
+
 from .serializers import BookSerializer, AuthorSerializer
 from django.contrib import messages
 
@@ -349,12 +353,116 @@ class GoogleBooks_View(View):
 
         return reverse_lazy('google_books')
 
+    """
+    get:
+    Return a list of all the existing users.
+
+    post:
+    Create a new user instance.
+    """
+
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        new_book = Book.objects.create(
+            title=data['title'],
+            # description=data['description'],
+            published_year=data['published_year'],
+            acquired=data['acquired'],
+            thumbnail=data['thumbnail'],
+
+        )
+        new_book.save()
+
+        for author in data['authors']:
+            author_obj = Author.objects.get(name=author['name'])
+            new_book.authors.add(author_obj)
+
+        serializer = BookSerializer(new_book)
+        return Response(serializer.data)
+
+    def destroy(self, request, *args, **kwargs):
+        book = self.get_object()
+        book.delete()
+
+        return Response({"message": "Book has been deleted"})
+
+    # def put(self, request, *args, **kwargs):
+    #     book_object = Book.objects.get()
+
+    #     data = request.data
+    #     book_object.title = data["title"]
+    #     book_object.description = data["description"]
+    #     book_object.acquired = data["acquired"]
+    #     book_object.published_year = data["published_year"]
+    #     book_object.thumbnail = data["thumbnail"]
+
+    #     book_object.save()
+    #     serializer = BookSerializer(book_object)
+    #     return Response(serializer.data)
+
+    # def update(self, request, *args, **kwargs):
+    #     book_object = self.get_object()
+    #     data = request.data
+
+    #     author_obj = Author.objects.get(name=data['name'])
+    #     book_object.authors = author_obj
+    #     # author_obj = Author.objects.get(name=data['name'])
+    #     # book_object.authors = author_obj
+
+    #     book_object.title = data["title"]
+    #     book_object.description = data["description"]
+    #     book_object.acquired = data["acquired"]
+    #     book_object.published_year = data["published_year"]
+    #     book_object.thumbnail = data["thumbnail"]
+    #     book_object.save()
+
+    #     for author in data['authors']:
+    #         author_obj = Author.objects.get(name=author['name'])
+    #         book_object.authors.set(author_obj)
+
+    #     serializer = BookSerializer(book_object)
+    #     return Response(serializer.data)
+
+    def patch(self, request, *args, **kwargs):
+        book_object = Book.objects.get()
+        data = request.data
+
+        # author_obj = Author.objects.get(name=data['name'])
+        # book_object.authors = author_obj
+
+        book_object.title = data.get("title", book_object.title)
+        book_object.title = data.get("description", book_object.description)
+        book_object.title = data.get("acquired", book_object.acquired)
+        book_object.title = data.get(
+            "published_year", book_object.published_year)
+        book_object.title = data.get("thumbnail", book_object.thumbnail)
+
+        book_object.save()
+
+        for author in data['authors']:
+            author_obj = Author.objects.filter(name=author['name'])
+            book_object.authors.set(author_obj)
+
+        serializer = BookSerializer(book_object)
+        return Response(serializer.data)
+
 
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+
+
+# class ExampleVersioning(URLPathVersioning):
+#     default_version = "sdfsdfsdf"
+#     # allowed_versions = ...
+#     # version_param = ...
+
+
+# class ExampleView(APIView):
+#     versioning_class = ExampleVersioning

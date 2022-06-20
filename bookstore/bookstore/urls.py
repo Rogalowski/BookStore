@@ -28,5 +28,6 @@ urlpatterns = [
     path('google/',
          GoogleBooks_View.as_view(), name="google_books"),
 
+
     path('', include('books.urls'))
 ]

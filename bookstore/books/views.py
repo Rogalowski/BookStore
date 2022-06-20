@@ -18,6 +18,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.versioning import URLPathVersioning
 from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
 
 from .serializers import BookSerializer, AuthorSerializer
 from django.contrib import messages
@@ -366,6 +368,16 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        params = kwargs
+        print("params:", params)
+        filter_title = {'title__icontains': params['pk']}
+
+        books_retrieve = Book.objects.filter(Q(**filter_title))
+
+        serializer = BookSerializer(books_retrieve, many=True)
+        return Response(serializer.data)
+
     def create(self, request, *args, **kwargs):
         data = request.data
 
@@ -392,42 +404,24 @@ class BookViewSet(viewsets.ModelViewSet):
 
         return Response({"message": "Book has been deleted"})
 
-    # def put(self, request, *args, **kwargs):
-    #     book_object = Book.objects.get()
+    def put(self, request, *args, **kwargs):
+        book_object = Book.objects.get()
 
-    #     data = request.data
-    #     book_object.title = data["title"]
-    #     book_object.description = data["description"]
-    #     book_object.acquired = data["acquired"]
-    #     book_object.published_year = data["published_year"]
-    #     book_object.thumbnail = data["thumbnail"]
+        data = request.data
+        book_object.title = data["title"]
+        book_object.description = data["description"]
+        book_object.acquired = data["acquired"]
+        book_object.published_year = data["published_year"]
+        book_object.thumbnail = data["thumbnail"]
 
-    #     book_object.save()
-    #     serializer = BookSerializer(book_object)
-    #     return Response(serializer.data)
+        book_object.save()
 
-    # def update(self, request, *args, **kwargs):
-    #     book_object = self.get_object()
-    #     data = request.data
+        for author in data['authors']:
+            author_obj = Author.objects.get(name=author['name'])
+            book_object.authors.set(author_obj)
 
-    #     author_obj = Author.objects.get(name=data['name'])
-    #     book_object.authors = author_obj
-    #     # author_obj = Author.objects.get(name=data['name'])
-    #     # book_object.authors = author_obj
-
-    #     book_object.title = data["title"]
-    #     book_object.description = data["description"]
-    #     book_object.acquired = data["acquired"]
-    #     book_object.published_year = data["published_year"]
-    #     book_object.thumbnail = data["thumbnail"]
-    #     book_object.save()
-
-    #     for author in data['authors']:
-    #         author_obj = Author.objects.get(name=author['name'])
-    #         book_object.authors.set(author_obj)
-
-    #     serializer = BookSerializer(book_object)
-    #     return Response(serializer.data)
+        serializer = BookSerializer(book_object)
+        return Response(serializer.data)
 
     def patch(self, request, *args, **kwargs):
         book_object = Book.objects.get()
@@ -443,12 +437,18 @@ class BookViewSet(viewsets.ModelViewSet):
             "published_year", book_object.published_year)
         book_object.title = data.get("thumbnail", book_object.thumbnail)
 
+        # try:
+        #     auth_obj = Author.objects.get(name=data['name'])
+        #     book_object.authors = auth_obj
+        # except KeyError:
+        #     pass
+
+        # for author in data['authors']:
+        #     author_obj = Author.objects.filter(name=author['name'])
+        # book_object.authors.set(author_obj)
+
+        book_object.authors.set(**data['authors']['name'])
         book_object.save()
-
-        for author in data['authors']:
-            author_obj = Author.objects.filter(name=author['name'])
-            book_object.authors.set(author_obj)
-
         serializer = BookSerializer(book_object)
         return Response(serializer.data)
 

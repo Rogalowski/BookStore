@@ -1,14 +1,8 @@
-from pickle import APPEND
-from django.http import HttpResponse, HttpResponseRedirect
-# import requests
-from django.views.generic.edit import FormView
-from webbrowser import get
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
-# from html5lib import serialize
 import requests
-# from requests import request
 from .models import Author, Book
 from books.forms import AddBook_Form, SearchBook_Form, SearchBookGoogleApi_Form
 from django.views.generic import UpdateView, DeleteView
@@ -16,10 +10,7 @@ from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.versioning import URLPathVersioning
-from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
+
 
 from .serializers import BookSerializer, AuthorSerializer
 from django.contrib import messages

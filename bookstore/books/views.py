@@ -368,15 +368,58 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    def retrieve(self, request, *args, **kwargs):
-        params = kwargs
-        print("params:", params)
-        filter_title = {'title__icontains': params['pk']}
+    # def get(self, request, *args, **kwargs):
+    #     # acquired = self.kwargs['q']
 
-        books_retrieve = Book.objects.filter(Q(**filter_title))
+    #     books_retrieve = Book.objects.filter(acquired=True)
 
-        serializer = BookSerializer(books_retrieve, many=True)
-        return Response(serializer.data)
+    #     serializer = BookSerializer(books_retrieve, many=True)
+    #     return Response(serializer.data)
+
+    def get_queryset(self):
+
+        typed_title = self.request.query_params.get('title')
+        typed_authors = self.request.query_params.get('author')
+        typed_year_min = self.request.query_params.get('from')
+        typed_year_max = self.request.query_params.get('to')
+
+        if not self.request.query_params.get('title'):
+            typed_title = " "
+        if not self.request.query_params.get('from'):
+            typed_year_min = 0
+        if not self.request.query_params.get('to'):
+            typed_year_max = 10000
+        if not self.request.query_params.get('author'):
+            typed_authors = ""
+        if not self.request.query_params.get('acquired') == 'true':
+            typed_acquired = False
+        else:
+            typed_acquired = True
+
+        filter_title = {'title__icontains': typed_title}
+        filter_authors = {'authors__name__icontains': typed_authors}
+        filter_acquired = {'acquired__exact': typed_acquired}
+        filter_year = {'published_year__gte': typed_year_min,
+                       'published_year__lte': typed_year_max}
+
+        filtered_books = Book.objects.filter(
+            Q(**filter_authors) &
+            Q(**filter_title) & Q(**filter_year) & Q(**filter_acquired))
+        return filtered_books
+
+    # def retrieve(self, request, *args, **kwargs):
+    #     params = kwargs
+    #     if kwargs['pk']:
+    #         print("HAHAHH")
+    #         print(args)
+    #     a = self.request.GET.get('name')
+    #     print("params:", request.GET.get('pk='))
+    #     filter_title = {'title__icontains': params['pk']}
+
+    #     books_retrieve = Book.objects.filter(acquired=False)
+
+    #     serializer = BookSerializer(books_retrieve, many=True)
+    #     return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         data = request.data

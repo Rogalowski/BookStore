@@ -94,6 +94,7 @@ DATABASES = {
         'PASSWORD': '7bf4e90fc38a07f485f51d9436f0d9222c0544a71a116ef6601bf2bc2471dc86',
         'PORT': 5432,
     }
+}
 # }
 # DATABASES = {
 #     'default': {

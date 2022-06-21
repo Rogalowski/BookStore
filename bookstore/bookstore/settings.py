@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-bk!ql*g(cs%q8v=jgqaiss!zfiumn(i$q1uve0$2_@xb68-c+!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["34.241.115.67", "127.0.0.1"]
+ALLOWED_HOSTS = ["book-store-jacek.herokuapp.com", "127.0.0.1"]
 
 
 # Application definition
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'bookstore.urls'
@@ -131,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
+STATIC_ROOT = [
     os.path.join(BASE_DIR, "static"),  # static ROOT import
 ]
 # Default primary key field type

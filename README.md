@@ -20,28 +20,63 @@
 # CONFIGURATION & REQUIREMENTS
 
 asgiref==3.5.2
+astroid==2.11.5
 asttokens==2.0.5
+autopep8==1.6.0
 backcall==0.2.0
+black==22.3.0
+certifi==2022.5.18.1
+charset-normalizer==2.0.12
+click==8.1.3
 decorator==5.1.1
+dill==0.3.5.1
 Django==4.0.5
 django-extensions==3.1.5
+django-filter==21.1
+django-shortuuidfield==0.1.3
+djangorestframework==3.13.1
 executing==0.8.3
+idna==3.3
 ipython==8.4.0
+isort==5.10.1
 jedi==0.18.1
+joblib==1.1.0
+lazy-object-proxy==1.7.1
+Markdown==3.3.7
 matplotlib-inline==0.1.3
+mccabe==0.7.0
+mypy-extensions==0.4.3
+nltk==3.7
 parso==0.8.3
+pathspec==0.9.0
+pep8==1.7.1
 pexpect==4.8.0
 pickleshare==0.7.5
+platformdirs==2.5.2
 prompt-toolkit==3.0.29
 psycopg2-binary==2.9.3
 ptyprocess==0.7.0
 pure-eval==0.2.2
+pycodestyle==2.8.0
 Pygments==2.12.0
+pylint==2.14.0
+pylint-django==2.5.3
+pylint-plugin-utils==0.7
+pytz==2022.1
+regex==2022.6.2
+requests==2.27.1
+shortuuid==1.0.9
 six==1.16.0
 sqlparse==0.4.2
 stack-data==0.2.0
+toml==0.10.2
+tomli==2.0.1
+tomlkit==0.11.0
+tqdm==4.64.0
 traitlets==5.2.2.post1
+urllib3==1.26.9
 wcwidth==0.2.5
+wrapt==1.14.1
 
 # TECH STACK
 

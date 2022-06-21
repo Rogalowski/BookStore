@@ -61,7 +61,7 @@ class SearchBook_Form(ModelForm):
 class SearchBookGoogleApi_Form(ModelForm):
     # the_choices = [(a.pk, a.name) for a in Author.objects.all()]
 
-    q = forms.CharField(label='Search by title', required=False)
+    q = forms.CharField(label='Search by author', required=False)
     # authors = forms.CharField(label='Search by authors', required=False)
     # authors = forms.ModelChoiceField(
     #     queryset=Author.objects.all(), required=False)

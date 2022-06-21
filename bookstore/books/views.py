@@ -10,10 +10,13 @@ from django.db.models import Q
 from django.db.utils import IntegrityError
 from rest_framework import viewsets
 from rest_framework.response import Response
-
-
 from .serializers import BookSerializer, AuthorSerializer
 from django.contrib import messages
+
+
+"""
+Listing all books from database with GUI for client
+"""
 
 
 class ListBook_View(View):
@@ -30,6 +33,9 @@ class ListBook_View(View):
             'published_year_min': [],
             'published_year_max': [],
         }
+
+        """Search Form for Books"""
+
         if form.is_valid():
             typed_title = form.cleaned_data['title']
             typed_author = form.cleaned_data['authors']
@@ -68,6 +74,8 @@ class ListBook_View(View):
             context['filtered_books'] = filtered_books
         return render(request, 'books/list_book_view.html', context)
 
+        """ Add Form of new Book"""
+
 
 class AddBook_View(View):
     def get(self, request):
@@ -97,14 +105,9 @@ class AddBook_View(View):
             thumbnail = form.cleaned_data['thumbnail']
             print(f" thumbnail: {thumbnail}")
 
-            # if Room.objects.filter(name=room_name).first():
-            # error_name = f"That room exist: {room_name}"
-            # return render(request, 'booking_rooms_templates/add_room_html.html', context={'error_name': error_name})
-
             add_book = Book.objects.create(
                 title=title,
                 description=description,
-                # authors=authors,
                 acquired=acquired,
                 published_year=published_year,
                 thumbnail=thumbnail,
@@ -118,6 +121,8 @@ class AddBook_View(View):
             'result': f"FORM CRASHED, TRY ONE MORE TIME"
         }
         return render(request, 'books/add_book_view.html', context)
+
+        """Edit Form for Book """
 
 
 class EditBook_View(UpdateView):
@@ -191,11 +196,10 @@ class DeleteBook_View(DeleteView):
         id_ = self.kwargs.get('book_id')
         return get_object_or_404(Book, id=id_)
 
+    """Get Books from Google API"""
+
 
 class GoogleBooks_View(View):
-
-    # form_class = SearchBookGoogleApi_Form
-
     template_name = 'books/list_book_api_view.html'
 
     # def search(self, title_book_api, authors_book_api):
@@ -207,9 +211,8 @@ class GoogleBooks_View(View):
             url=f'https://www.googleapis.com/books/v1/volumes', params=params)
         # url=f'https://www.googleapis.com/books/v1/volumes?q={title_book_api}+inauthor:{authors_book_api}&maxResults=5')
 
-        books_json = google_books.json()
-        # print(f'books_json: ', books_json)
-        print('BOOKS JSON: ', books_json)
+        books_json = google_books.json()  # get books in JSON
+
         try:
 
             bookshelf = books_json['items']
@@ -268,6 +271,7 @@ class GoogleBooks_View(View):
             except KeyError:
                 description = ""
 
+            """ It will create authors in database that are not exists in database before importing new books"""
             try:
                 for author in authors_temp:
                     add_authors_to_model = Author.objects.get_or_create(
@@ -278,9 +282,9 @@ class GoogleBooks_View(View):
             # book_update = Book.objects.get(id=kwargs['book_id'])
             authors_filtered_book = Author.objects.filter(
                 name__in=[*authors_temp])
-
+            """If book already exsist will it update, else create new entry"""
             if Book.objects.filter(external_id=external_id).exists():
-                loop_number -= 1
+                loop_number -= 1  # count of imported books
                 import_book = Book.objects.get(external_id=external_id)
                 import_book.title = title
                 import_book.description = description
@@ -300,22 +304,6 @@ class GoogleBooks_View(View):
 
                 )
                 import_book.authors.add(*authors_filtered_book)
-            # import_book.title = title,
-            # import_book.description = description,
-            # import_book.published_year = published_year,
-            # import_book.acquired = acquired,
-            # import_book.thumbnail = thumbnail
-            # import_book.save()
-            # import_book = Book.objects.create(
-            #     external_id=external_id,
-            #     title=title,
-            #     description=description,
-            #     published_year=published_year,
-            #     acquired=acquired,
-            #     thumbnail=thumbnail
-            # )
-
-            # import_book.authors.add(*authors_filtered_book)
 
         messages.add_message(request, messages.INFO,
                              f'YOU HAVE  IMPORTED {loop_number} BOOKS.')
@@ -324,48 +312,22 @@ class GoogleBooks_View(View):
     def post(self,  request,  *args, **kwargs):
         form = SearchBookGoogleApi_Form(request.POST or None)
         if form.is_valid():
-            #     title_book_api = form.cleaned_data['title']
-            #     books = self.search(title_book_api)
-            # for book in books:
-            # print(f'BOOK: ', book.id)
-            # print(f'books:  ', books)
-            # for book in books:
-            # print(f'BOOK: ', book['volumeInfo']['title'])
+
             title_book_api = form.cleaned_data['q']
-            # authors_book_api = form.cleaned_data['authors']
-            # books = self.search(title_book_api, authors_book_api)
+
             books = self.search(request, title_book_api)
             self.add_books_to_library(request, books)
 
             return HttpResponseRedirect(reverse_lazy('books'))
-        # context = {
-        # 'books': books,
-        # }
-        # return render(request, self.template_name, context)
-        # return HttpResponseRedirect(reverse_lazy('google_books'))
 
         return reverse_lazy('google_books')
 
-    """
-    get:
-    Return a list of all the existing users.
-
-    post:
-    Create a new user instance.
-    """
+    """Api Books with Searching, GET, POST, DELETE, PATCH methods"""
 
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-
-    # def get(self, request, *args, **kwargs):
-    #     # acquired = self.kwargs['q']
-
-    #     books_retrieve = Book.objects.filter(acquired=True)
-
-    #     serializer = BookSerializer(books_retrieve, many=True)
-    #     return Response(serializer.data)
 
     def get_queryset(self):
 
@@ -471,9 +433,6 @@ class BookViewSet(viewsets.ModelViewSet):
         book_object = Book.objects.get()
         data = request.data
 
-        # author_obj = Author.objects.get(name=data['name'])
-        # book_object.authors = author_obj
-
         book_object.title = data.get("title", book_object.title)
         book_object.title = data.get("description", book_object.description)
         book_object.title = data.get("acquired", book_object.acquired)
@@ -481,29 +440,26 @@ class BookViewSet(viewsets.ModelViewSet):
             "published_year", book_object.published_year)
         book_object.title = data.get("thumbnail", book_object.thumbnail)
 
-        # try:
-        #     auth_obj = Author.objects.get(name=data['name'])
-        #     book_object.authors = auth_obj
-        # except KeyError:
-        #     pass
-
-        # for author in data['authors']:
-        #     author_obj = Author.objects.filter(name=author['name'])
-        # book_object.authors.set(author_obj)
-
         book_object.authors.set(**data['authors']['name'])
         book_object.save()
         serializer = BookSerializer(book_object)
         return Response(serializer.data)
 
 
+"""API Authors model"""
+
+
 class AuthorViewSet(viewsets.ModelViewSet):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
+    pass
+#     queryset = Author.objects.all()
+#     serializer_class = AuthorSerializer
+
+
+"""API Specyfication response"""
 
 
 class APISpecViewSet(viewsets.ViewSet):
-    queryset = Book.objects.all()
+    queryset = Author.objects.all()
 
     def list(self, request, *args, **kwargs):
         return Response({"info": {"version": "2022.06.21"}})

@@ -391,17 +391,26 @@ class BookViewSet(viewsets.ModelViewSet):
             typed_year_max = 10000
         if not self.request.query_params.get('author'):
             typed_authors = ""
-        if not self.request.query_params.get('acquired') == 'true':
-            typed_acquired = False
-        else:
-            typed_acquired = True
 
         filter_title = {'title__icontains': typed_title.replace('"', "")}
         filter_authors = {
             'authors__name__icontains': typed_authors.replace('"', "")}
-        filter_acquired = {'acquired__exact': typed_acquired}
+
         filter_year = {'published_year__gte': typed_year_min,
                        'published_year__lte': typed_year_max}
+
+        if not self.request.query_params.get('acquired'):
+            filtered_books = Book.objects.filter(
+                Q(**filter_authors) &
+                Q(**filter_title) & Q(**filter_year))
+            return filtered_books
+
+        if self.request.query_params.get('acquired') == 'false':
+            typed_acquired = False
+        elif self.request.query_params.get('acquired') == 'true':
+            typed_acquired = True
+
+        filter_acquired = {'acquired__exact': typed_acquired}
 
         filtered_books = Book.objects.filter(
             Q(**filter_authors) &

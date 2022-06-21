@@ -200,3 +200,15 @@ Technical requirements
 When submitting the task, please provide us with:
 • URL for the deployed application
 • link to the public repository, so that our technical recruiters can look at the code.
+
+
+![obraz](https://user-images.githubusercontent.com/68423391/174774432-6394ad96-f9eb-4c2f-817a-ee9a8a925119.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774480-5d9b1df7-4558-4ca2-8db2-f9d346897f50.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774585-8788e165-bbe8-45ab-9024-083f644f6835.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774659-187cdcb1-6376-416d-868f-f66a9c5f152d.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774734-25fbd491-62ba-478e-b186-bb1d071d129c.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774826-c4404048-ed68-4692-a5df-8fd849b37ec4.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774894-9c315213-7dec-4483-bcd6-245b546a5fcc.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174774938-5d8a4d1d-51df-4f4e-bbaa-6a0b65a73b4f.png)
+![obraz](https://user-images.githubusercontent.com/68423391/174775004-e1eb799c-5802-411d-97f5-139b66a100a9.png)
+

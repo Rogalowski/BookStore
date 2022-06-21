@@ -1,11 +1,11 @@
 from rest_framework import routers
-from .views import BookViewSet, AuthorViewSet
+from .views import BookViewSet, AuthorViewSet, APISpecViewSet
 from django.urls import path, include
 
 router = routers.DefaultRouter()
 router.register(r'books', BookViewSet)
 router.register(r'authors', AuthorViewSet)
-# router.register(r'api-spec', ExampleVersioning)
+router.register(r'api_spec', APISpecViewSet)
 
 
 urlpatterns = [

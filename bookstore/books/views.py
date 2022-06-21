@@ -501,11 +501,8 @@ class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
 
 
-# class ExampleVersioning(URLPathVersioning):
-#     default_version = "sdfsdfsdf"
-#     # allowed_versions = ...
-#     # version_param = ...
+class APISpecViewSet(viewsets.ViewSet):
+    queryset = Book.objects.all()
 
-
-# class ExampleView(APIView):
-#     versioning_class = ExampleVersioning
+    def list(self, request, *args, **kwargs):
+        return Response({"info": {"version": "2022.06.21"}})

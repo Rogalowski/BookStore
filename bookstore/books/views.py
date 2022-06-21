@@ -396,8 +396,9 @@ class BookViewSet(viewsets.ModelViewSet):
         else:
             typed_acquired = True
 
-        filter_title = {'title__icontains': typed_title}
-        filter_authors = {'authors__name__icontains': typed_authors}
+        filter_title = {'title__icontains': typed_title.replace('"', "")}
+        filter_authors = {
+            'authors__name__icontains': typed_authors.replace('"', "")}
         filter_acquired = {'acquired__exact': typed_acquired}
         filter_year = {'published_year__gte': typed_year_min,
                        'published_year__lte': typed_year_max}

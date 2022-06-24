@@ -4,7 +4,6 @@ attrs==19.3.0
 autopep8==1.6.0
 bcrypt==3.1.7
 beautifulsoup4==4.8.2
-blessings==1.6
 blinker==1.4
 bpython==0.18
 Brlapi==0.7.0

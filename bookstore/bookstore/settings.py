@@ -85,6 +85,8 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 #     }
 # }
 SHELL_PLUS_PRINT_SQL = True
+
+
 DATABASES = {
     'default': {
         'HOST': 'ec2-54-77-40-202.eu-west-1.compute.amazonaws.com',

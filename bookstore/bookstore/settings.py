@@ -85,27 +85,27 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 #     }
 # }
 SHELL_PLUS_PRINT_SQL = True
-DATABASES = {
-    'default': {
-        'HOST': 'ec2-54-77-40-202.eu-west-1.compute.amazonaws.com',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd6icn4nue9hp9s',
-        'USER': 'hrarafxohibmcg',
-        'PASSWORD': '7bf4e90fc38a07f485f51d9436f0d9222c0544a71a116ef6601bf2bc2471dc86',
-        'PORT': 5432,
-    }
-}
-# }
 # DATABASES = {
 #     'default': {
-#         'HOST': '127.0.0.1',
+#         'HOST': 'ec2-54-77-40-202.eu-west-1.compute.amazonaws.com',
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'bookstore',
-#         'USER': 'postgres',
-#         'PASSWORD': 'bookstore',
-#         'PORT': 5431,
+#         'NAME': 'd6icn4nue9hp9s',
+#         'USER': 'hrarafxohibmcg',
+#         'PASSWORD': '7bf4e90fc38a07f485f51d9436f0d9222c0544a71a116ef6601bf2bc2471dc86',
+#         'PORT': 5432,
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'HOST': '127.0.0.1',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bookstore',
+        'USER': 'postgres',
+        'PASSWORD': 'bookstore',
+        'PORT': 5431,
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

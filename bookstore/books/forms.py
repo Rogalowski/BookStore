@@ -23,7 +23,7 @@ class AddBook_Form(ModelForm):
 
 
 class SearchBook_Form(ModelForm):
-    the_choices = [(a.pk, a.name) for a in Author.objects.all()]
+    # the_choices = [(a.pk, a.name) for a in Author.objects.all()]
 
     title = forms.CharField(label='Search by: title', required=False)
     # authors = forms.CharField(required=False)

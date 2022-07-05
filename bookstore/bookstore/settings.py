@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bk!ql*g(cs%q8v=jgqaiss!zfiumn(i$q1uve0$2_@xb68-c+!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["book-store-jacek.herokuapp.com", "127.0.0.1"]
 
@@ -89,7 +89,7 @@ SHELL_PLUS_PRINT_SQL = True
 
 DATABASES = {
     'default': {
-        'HOST': 'ec2-54-77-40-202.eu-west-1.compute.amazonaws.com',
+        'HOST': 'ec2-52-208-164-5.eu-west-1.compute.amazonaws.com',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'd9sb6ii6e86fl2',
         'USER': 'lyxnoousoafoep',

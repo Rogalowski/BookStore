@@ -1,7 +1,8 @@
 
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf.urls.static import static  # static ROOT import
+from django.conf import settings  # static ROOT import
 from books.views import ListBook_View, AddBook_View, EditBook_View, DeleteBook_View, GoogleBooks_View
 
 """Client URLs and API URLs"""
@@ -20,3 +21,5 @@ urlpatterns = [
 
     path('', include('books.urls'))
 ]
+# static files ROOT
+# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

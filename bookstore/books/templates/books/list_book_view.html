@@ -12,17 +12,19 @@
 
 
 {% if messages %}
-<h2 class="messages">
+<h2 class="alert alert-dismissible alert-warning">
     {% for message in messages %}  {{ message }}   {% endfor %}
 </h2>
 {% endif %}
 
 
-<form action="" method="get">
+<form action="" method="get" class="form-group col-sm-10 form-label  ">
   {% csrf_token %}
   {{ form }}
   <input type="submit" value="Search">
 </form>
+
+
 <h2> SEARCHED BOOKS:   </h2>
 <p>  {% for book in  filtered_books %}
   <ul>
@@ -46,8 +48,8 @@
     <b> Image:</b>
     <img src="{{book.thumbnail}}" alt="No Image" />
     <div>
-       <a href="{% url 'edit_book' book.id %} " ><button>EDIT BOOK</button></a>
-      &nbsp <a href="{% url 'delete_book' book.id %} " ><button>DELETE BOOK</button></a>
+       <a href="{% url 'edit_book' book.id %} " ><button class="btn btn-warning">EDIT BOOK</button></a>
+      &nbsp <a href="{% url 'delete_book' book.id %} " ><button class="btn btn-danger">DELETE BOOK</button></a>
     </div>
   </p>
     </li>
@@ -87,8 +89,8 @@
   <img src="{{book.thumbnail}}" alt="No Image" />
   </li>
 </ul>
-<h4>   <a href="{% url 'edit_book' book.id %} " > <button>EDIT BOOK</button></a>
- &nbsp <a href="{% url 'delete_book' book.id %} " ><button>DELETE BOOK</button></a>
+<h4>   <a href="{% url 'edit_book' book.id %} " > <button class="btn btn-warning">EDIT BOOK</button></a>
+ &nbsp <a href="{% url 'delete_book' book.id %} " ><button class="btn btn-danger">DELETE BOOK</button></a>
 </h4>
 {% endfor %}
              </p>

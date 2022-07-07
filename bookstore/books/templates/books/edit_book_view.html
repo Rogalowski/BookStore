@@ -1,4 +1,4 @@
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <b><a href="{{request.META.HTTP_REFERER}}">Go back</a> </b>
 <form action="" method="PATCH">
     {% csrf_token %} {{ form }}

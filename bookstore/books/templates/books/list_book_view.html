@@ -1,5 +1,11 @@
+{% extends 'base.html' %}
 
-<h1> <a href="{% url 'books'   %} " > YOUR LIBRARY</a> </h1>
+            {% block content %}
+
+
+
+
+<h1  > <a href="{% url 'books'   %} " > YOUR LIBRARY</a> </h1>
 <h2> <a href="{% url 'google_books'   %} " > GOOGLE API </a></h2>
 
 <h2> <a href="{% url 'add_book'  %} " >ADD BOOK </a>  </h2>
@@ -87,4 +93,4 @@
 {% endfor %}
              </p>
 
-
+ {% endblock content %}

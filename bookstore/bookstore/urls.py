@@ -20,6 +20,4 @@ urlpatterns = [
 
 
     path('', include('books.urls'))
-]
-# static files ROOT
-# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

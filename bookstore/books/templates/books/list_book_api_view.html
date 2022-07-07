@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+            {% block content %}
+
+
 <h1><a href="{% url 'books'   %} "> Your Library</a></h1>
 
 <form action="" method="get">
@@ -36,3 +41,6 @@
         <input type="submit" value="IMPORT BOOKS" />
     </form>
 </div>
+
+
+ {% endblock content %}

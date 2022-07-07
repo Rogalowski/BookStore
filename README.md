@@ -248,4 +248,5 @@ When submitting the task, please provide us with:
 ![obraz](https://user-images.githubusercontent.com/68423391/174774826-c4404048-ed68-4692-a5df-8fd849b37ec4.png)
 ![obraz](https://user-images.githubusercontent.com/68423391/174774894-9c315213-7dec-4483-bcd6-245b546a5fcc.png)
 ![obraz](https://user-images.githubusercontent.com/68423391/174774938-5d8a4d1d-51df-4f4e-bbaa-6a0b65a73b4f.png)
-![obraz](https://user-images.githubusercontent.com/68423391/174775004-e1eb799c-5802-411d-97f5-139b66a100a9.png)
+![obraz](https://user-images.githubusercontent.com/68423391/177863514-90c50461-d73f-4444-b8d4-905e198c5cd8.png)
+

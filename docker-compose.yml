@@ -1,0 +1,15 @@
+version: "3"
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8080"
+    depends_on:
+      - database
+
+  database:
+    image: postgres:13.1
+    environment:
+      - POSTGRES_PASSWORD=tajnehaslo
+      - POSTGRES_USER=lyxnoousoafoep
+      - POSTGRES_DB=1067d36d6f7cecba13e811f5f1267879af32af0c52f3b85dce4e8c98d4b81eaa

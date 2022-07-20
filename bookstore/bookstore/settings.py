@@ -103,7 +103,7 @@ DATABASES = {
     'default': {
         'HOST':  'database',   # 'database',  # '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
+        'NAME': 'postgres',  # 'bookstore',
         'USER': 'postgres',
         'PASSWORD': 'bookstore',
         'PORT': 5432,
@@ -148,8 +148,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),  # static ROOT import
 ]
+# STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 # STATIC_ROOT = [
-#     os.path.join(BASE_DIR, "static"),  # static ROOT import
+# os.path.join(BASE_DIR, "static"),  # static ROOT import
 # ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

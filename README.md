@@ -21,6 +21,10 @@
 
 # HEROKU API: https://book-store-jacek.herokuapp.com/books/
 
+#DOCKERIZED APP USE:
+
+sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build 
+
 # CONFIGURATION & REQUIREMENTS
 
 asgiref==3.5.2

@@ -101,12 +101,12 @@ SHELL_PLUS_PRINT_SQL = True
 
 DATABASES = {
     'default': {
-        'HOST':  '127.0.0.1',   # 'database',  # '127.0.0.1',
+        'HOST':  'database',   # 'database',  # '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'bookstore',
-        'PORT': 5431,
+        'PORT': 5432,
     }
 }
 

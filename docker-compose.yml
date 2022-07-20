@@ -8,33 +8,48 @@ services:
   #     - POSTGRES_DB=d9sb6ii6e86fl2
 
   database:
+    restart: always
     image: postgres
     ports:
-      - "5431:5432"
+      # - "5431:5432"
+      - "5432"
+    networks:
+      - database-net
     environment:
       - POSTGRES_PASSWORD=bookstore
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
+    volumes:
+      - pgdata:/var/lib/posgresql/data
+
+
 
   django_app:
     # restart: always
     build:
       context: ./
       dockerfile: Dockerfile
-    # command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
-    networks:
-      - database-net
     ports:
-      - "8080:8080"
-    environment:
-      - POSTGRES_PASSWORD=bookstore
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+      - "8000:8000"
+    command:  >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    # environment:
+    #   - POSTGRES_PASSWORD=bookstore
+    #   - POSTGRES_USER=postgres
+    #   - POSTGRES_DB=postgres
     depends_on:
       - database
+    # links:
+    #   - database:database
+    networks:
+      - database-net
+
+
 networks:
     database-net:
-
+volumes:
+  pgdata:
 
 
 

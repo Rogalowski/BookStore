@@ -1,17 +1,42 @@
 version: "3"
 services:
-  backend:
+  # database:
+  #   image: postgres:13.1
+  #   environment:
+  #     - POSTGRES_PASSWORD=1067d36d6f7cecba13e811f5f1267879af32af0c52f3b85dce4e8c98d4b81eaa
+  #     - POSTGRES_USER=lyxnoousoafoep
+  #     - POSTGRES_DB=d9sb6ii6e86fl2
+
+  database:
+    image: postgres
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_PASSWORD=bookstore
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+
+  django_app:
+    # restart: always
     build:
       context: ./
       dockerfile: Dockerfile
+    # command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    networks:
+      - database-net
     ports:
-      - "8000:8080"
+      - "8080:8080"
+    environment:
+      - POSTGRES_PASSWORD=bookstore
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
     depends_on:
       - database
+networks:
+    database-net:
 
-  database:
-    image: postgres:13.1
-    environment:
-      - POSTGRES_PASSWORD=1067d36d6f7cecba13e811f5f1267879af32af0c52f3b85dce4e8c98d4b81eaa
-      - POSTGRES_USER=lyxnoousoafoep
-      - POSTGRES_DB=d9sb6ii6e86fl2
+
+
+
+
+

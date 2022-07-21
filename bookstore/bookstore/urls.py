@@ -3,12 +3,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static  # static ROOT import
 from django.conf import settings  # static ROOT import
+from django.urls import re_path  # static ROOT import
+from django.views.static import serve
 from books.views import ListBook_View, AddBook_View, EditBook_View, DeleteBook_View, GoogleBooks_View
 
 """Client URLs and API URLs"""
 
 urlpatterns = [
-
+    re_path(r'^static/(?P<path>.*)$', serve,
+            {'document_root': settings.STATIC_ROOT}),
     path('admin/', admin.site.urls),
     path('books_list/', ListBook_View.as_view(), name="books"),
     path('add_book/', AddBook_View.as_view(), name="add_book"),

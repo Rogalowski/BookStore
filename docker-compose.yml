@@ -1,24 +1,24 @@
 version: "3"
 services:
-  # database:
-  #   image: postgres:13.1
-  #   environment:
-  #     - POSTGRES_PASSWORD=1067d36d6f7cecba13e811f5f1267879af32af0c52f3b85dce4e8c98d4b81eaa
-  #     - POSTGRES_USER=lyxnoousoafoep
-  #     - POSTGRES_DB=d9sb6ii6e86fl2
 
   database:
     restart: always
     image: postgres
     ports:
       # - "5431:5432"
-      - "5432"
+      - "5431:5432"
     networks:
       - database-net
-    environment:
-      - POSTGRES_PASSWORD=bookstore
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
+    # environment:
+      # - POSTGRES_DB=${POSTGRES_DB_NAME}
+      # - POSTGRES_USER=${POSTGRES_USER}
+      # - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # - POSTGRES_DB=postgres
+      # - POSTGRES_USER=postgres
+      # - POSTGRES_PASSWORD=bookstore
+
+    env_file:
+      - bookstore/.env
     volumes:
       - pgdata:/var/lib/posgresql/data
 
@@ -35,10 +35,6 @@ services:
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     # python manage.py collectstatic --noinput &&
-    # environment:
-    #   - POSTGRES_PASSWORD=bookstore
-    #   - POSTGRES_USER=postgres
-    #   - POSTGRES_DB=postgres
     depends_on:
       - database
     # links:

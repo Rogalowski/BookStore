@@ -14,9 +14,6 @@ from pathlib import Path
 import os
 
 
-DB_USER = os.getenv('DB_USER')
-DB_PASSWORD = os.getenv('DB_PASSWORD')
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -111,8 +108,8 @@ DATABASES = {
         'HOST':  'database',   # 'database',  # '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',  # 'bookstore',
-        'USER': 'postgres',
-        'PASSWORD': 'bookstore',
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
         'PORT': 5432,
     }
 }

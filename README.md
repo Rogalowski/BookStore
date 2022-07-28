@@ -23,7 +23,7 @@
 
 # DOCKERIZED APP USE:
 
-sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build 
+sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build
 
 # CONFIGURATION & REQUIREMENTS
 
@@ -88,7 +88,7 @@ wrapt==1.14.1
 
 # TECH STACK
 
-Python, Django, Jinja, Postgres
+Python 3.10.5, Django 4.0.5, Jinja, Postgres 14.4
 
 # DESCRIPTION
 
@@ -253,4 +253,3 @@ When submitting the task, please provide us with:
 ![obraz](https://user-images.githubusercontent.com/68423391/174774894-9c315213-7dec-4483-bcd6-245b546a5fcc.png)
 ![obraz](https://user-images.githubusercontent.com/68423391/174774938-5d8a4d1d-51df-4f4e-bbaa-6a0b65a73b4f.png)
 ![obraz](https://user-images.githubusercontent.com/68423391/177863514-90c50461-d73f-4444-b8d4-905e198c5cd8.png)
-

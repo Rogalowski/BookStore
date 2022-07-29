@@ -20,7 +20,7 @@ services:
     env_file:
       - bookstore/.env
     volumes:
-      - pgdata:/var/lib/posgresql/data
+      - vol_data:/vol/web/database
 
 
 
@@ -41,12 +41,14 @@ services:
     #   - database:database
     networks:
       - database-net
+    volumes:
+      - vol_data:/vol/web/
 
 
 networks:
     database-net:
 volumes:
-  pgdata:
+  vol_data:
 
 
 

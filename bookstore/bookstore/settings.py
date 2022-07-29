@@ -92,29 +92,29 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 SHELL_PLUS_PRINT_SQL = True
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'database',  # '127.0.0.1',
-        'HOST':  os.getenv('POSTGRES_DB_HOST'),
-        'NAME':  os.getenv('POSTGRES_DB'),  # 'bookstore',
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'PORT': os.getenv('POSTGRES_PORT'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         # 'database',  # '127.0.0.1',
-#         'HOST':  os.getenv('POSTGRES_DB_HOST_HEROKU'),
-#         'NAME':  os.getenv('POSTGRES_DB_NAME_HEROKU'),  # 'bookstore',
-#         'USER': os.getenv('POSTGRES_USER_HEROKU'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD_HEROKU'),
-#         'PORT': os.getenv('POSTGRES_PORT_HEROKU'),
+#         'HOST':  os.getenv('POSTGRES_DB_HOST'),
+#         'NAME':  os.getenv('POSTGRES_DB'),  # 'bookstore',
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'PORT': os.getenv('POSTGRES_PORT'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'database',  # '127.0.0.1',
+        'HOST':  os.getenv('POSTGRES_DB_HOST_HEROKU'),
+        'NAME':  os.getenv('POSTGRES_DB_NAME_HEROKU'),  # 'bookstore',
+        'USER': os.getenv('POSTGRES_USER_HEROKU'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD_HEROKU'),
+        'PORT': os.getenv('POSTGRES_PORT_HEROKU'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

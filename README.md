@@ -27,7 +27,7 @@ sudo USER_ID=1000 GROUP_ID=1000 docker-compose up --build
 
 # TECH STACK
 
-Python 3.10.5, Django 4.0.5, Jinja, Postgres 14.4
+Python 3.10.5, Django 4.0.5, Jinja, Postgres 14.4, REST API 3.13.1
 
 # DESCRIPTION
 
